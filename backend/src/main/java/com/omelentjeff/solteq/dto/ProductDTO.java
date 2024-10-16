@@ -1,6 +1,5 @@
 package com.omelentjeff.solteq.dto;
 
-import com.omelentjeff.solteq.entity.NutritionalFact;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ public class ProductDTO {
     private String manufacturer;
     private String name;
     private BigDecimal weight;
-    private NutritionalFact nutritionalFact;
+    private NutritionalFactDTO nutritionalFact;
     private String photoUrl;
     private String gtin;
 }
