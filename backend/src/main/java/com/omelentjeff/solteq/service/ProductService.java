@@ -50,16 +50,10 @@ public class ProductService {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
 
-        existingProduct.setManufacturer(productDTO.getManufacturer());
-        existingProduct.setName(productDTO.getName());
-        existingProduct.setWeight(productDTO.getWeight());
-        existingProduct.setCaloriesPer100g(productDTO.getCaloriesPer100g());
-        existingProduct.setKilojoulesPer100g(productDTO.getKilojoulesPer100g());
-        existingProduct.setPhotoUrl(productDTO.getPhotoUrl());
-        existingProduct.setGtin(productDTO.getGtin());
-        
-        Product updatedProduct = productRepository.save(existingProduct);
-        return productMapper.toDTO(updatedProduct);
+        productMapper.updateProductFromDto(productDTO, existingProduct);
+
+        productRepository.save(existingProduct);
+        return productMapper.toDTO(existingProduct);
     }
 
     public Page<ProductDTO> searchProducts(String name, String manufacturer, String gtin, Pageable pageable) {
