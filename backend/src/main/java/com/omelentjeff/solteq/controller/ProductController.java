@@ -45,4 +45,19 @@ public class ProductController {
 
         return ResponseEntity.created(location).body(savedProduct);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductDTO>> searchProducts (
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String manufacturer,
+            @RequestParam(required = false) String gtin,
+            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<ProductDTO> products = productService.searchProducts(name, manufacturer, gtin, pageable);
+
+        if (products.hasContent()) {
+            return ResponseEntity.ok(products);
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }
