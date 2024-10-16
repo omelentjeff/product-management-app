@@ -1,0 +1,1 @@
+# solteq-harjoitustehtava
