@@ -45,6 +45,23 @@ public class ProductService {
         return productMapper.toDTO(savedProduct);
     }
 
+    @Transactional
+    public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
+
+        existingProduct.setManufacturer(productDTO.getManufacturer());
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setWeight(productDTO.getWeight());
+        existingProduct.setCaloriesPer100g(productDTO.getCaloriesPer100g());
+        existingProduct.setKilojoulesPer100g(productDTO.getKilojoulesPer100g());
+        existingProduct.setPhotoUrl(productDTO.getPhotoUrl());
+        existingProduct.setGtin(productDTO.getGtin());
+        
+        Product updatedProduct = productRepository.save(existingProduct);
+        return productMapper.toDTO(updatedProduct);
+    }
+
     public Page<ProductDTO> searchProducts(String name, String manufacturer, String gtin, Pageable pageable) {
         Page<Product> productPage = productRepository.findByNameContainingIgnoreCaseOrManufacturerContainingIgnoreCaseOrGtinIgnoreCase(name, manufacturer, gtin, pageable);
 
