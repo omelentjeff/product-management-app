@@ -2,6 +2,7 @@ package com.omelentjeff.solteq.service;
 
 import com.omelentjeff.solteq.dto.ProductDTO;
 import com.omelentjeff.solteq.entity.Product;
+import com.omelentjeff.solteq.exception.ProductNotFoundException;
 import com.omelentjeff.solteq.mapper.ProductMapper;
 import com.omelentjeff.solteq.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class ProductService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(productDTOS, pageable, productPage.getTotalElements());
+    }
+
+    public ProductDTO getProductById(Integer id) {
+        Product tempProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
+        return productMapper.toDTO(tempProduct);
     }
 
     @Transactional
