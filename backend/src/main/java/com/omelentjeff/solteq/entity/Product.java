@@ -1,9 +1,6 @@
 package com.omelentjeff.solteq.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,10 +24,10 @@ public class Product {
     private String name;
 
     private BigDecimal weight;
-
-    private Integer caloriesPer100g;
-
-    private Integer kilojoulesPer100g;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nutritional_fact_id", referencedColumnName = "id")
+    private NutritionalFact nutritionalFact;
 
     private String photoUrl;
 
