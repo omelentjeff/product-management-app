@@ -34,5 +34,6 @@ public class Product {
 
     private String photoUrl;
 
+    private String gtin;
 
 }
