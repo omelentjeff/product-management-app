@@ -3,6 +3,8 @@
 # Compiled source code and class files
 /target/
 /out/
+/backend/target/
+/backend/build/
 
 # Logs
 *.log
