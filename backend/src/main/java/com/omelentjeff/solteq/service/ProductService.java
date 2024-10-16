@@ -44,4 +44,14 @@ public class ProductService {
         Product savedProduct = productRepository.save(tempProduct);
         return productMapper.toDTO(savedProduct);
     }
+
+    public Page<ProductDTO> searchProducts(String name, String manufacturer, String gtin, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByNameContainingIgnoreCaseOrManufacturerContainingIgnoreCaseOrGtinIgnoreCase(name, manufacturer, gtin, pageable);
+
+        List<ProductDTO> productDTOS = productPage.stream()
+                .map(productMapper::toDTO)
+                .toList();
+
+        return new PageImpl<>(productDTOS, pageable, productPage.getTotalElements());
+    }
 }
