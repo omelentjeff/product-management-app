@@ -28,9 +28,9 @@ public class Product {
 
     private BigDecimal weight;
 
-    private int caloriesPer100g;
+    private Integer caloriesPer100g;
 
-    private int kilojoulesPer100g;
+    private Integer kilojoulesPer100g;
 
     private String photoUrl;
 
