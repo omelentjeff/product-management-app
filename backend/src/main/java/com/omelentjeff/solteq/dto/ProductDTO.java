@@ -15,8 +15,8 @@ public class ProductDTO {
     private String manufacturer;
     private String name;
     private BigDecimal weight;
-    private int caloriesPer100g;
-    private int kilojoulesPer100g;
+    private Integer caloriesPer100g;
+    private Integer kilojoulesPer100g;
     private String photoUrl;
     private String gtin;
 }
