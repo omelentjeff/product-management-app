@@ -46,7 +46,7 @@ public class ProductController {
         return ResponseEntity.created(location).body(savedProduct);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProductById(@PathVariable Integer id, @Valid @RequestBody ProductDTO productDTO) {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
