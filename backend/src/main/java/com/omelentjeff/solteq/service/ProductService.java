@@ -33,7 +33,7 @@ public class ProductService {
         return new PageImpl<>(productDTOS, pageable, productPage.getTotalElements());
     }
 
-    public ProductDTO getProductById(Integer id) {
+    public ProductDTO getProductById(Long id) {
         Product tempProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
         return productMapper.toDTO(tempProduct);
     }
@@ -46,7 +46,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
 
