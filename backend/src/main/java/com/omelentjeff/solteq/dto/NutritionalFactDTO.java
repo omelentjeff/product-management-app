@@ -15,10 +15,13 @@ public class NutritionalFactDTO {
 
     private Integer caloriesPer100g;
     private Integer kilojoulesPer100g;
-    private BigDecimal protein;
-    private BigDecimal carbohydrates;
     private BigDecimal fat;
-    private BigDecimal sugar;
-    private BigDecimal fiber;
+    private BigDecimal carbohydrates;
+    private BigDecimal sugars;
+    private BigDecimal polyols;
+    private BigDecimal fibers;
+    private BigDecimal protein;
     private BigDecimal sodium;
+    private BigDecimal vitaminC;
+    private BigDecimal calcium;
 }
