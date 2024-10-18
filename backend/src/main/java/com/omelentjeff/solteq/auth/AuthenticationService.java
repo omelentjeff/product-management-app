@@ -2,6 +2,7 @@ package com.omelentjeff.solteq.auth;
 
 import com.omelentjeff.solteq.entity.Role;
 import com.omelentjeff.solteq.entity.UserEntity;
+import com.omelentjeff.solteq.exception.UsernameInUseException;
 import com.omelentjeff.solteq.repository.UserRepository;
 import com.omelentjeff.solteq.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username is already taken");
+            throw new UsernameInUseException("Username is already taken");
         }
 
         var user = UserEntity.builder()
