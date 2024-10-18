@@ -16,4 +16,15 @@ public class GlobalExceptionHandler {
         error.setTimeStamp(System.currentTimeMillis());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UsernameInUseException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameInUse(UsernameInUseException ex) {
+        var error = ErrorResponse
+                .builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .timeStamp(System.currentTimeMillis())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
