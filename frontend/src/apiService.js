@@ -14,3 +14,24 @@ export const fetchData = async (page = 0, pageSize = 10, sort = "") => {
     throw error;
   }
 };
+
+export const fetchAllData = async () => {
+  let allData = [];
+  let page = 0;
+  let pageSize = 10;
+  let totalPages = 1;
+
+  while (page < totalPages) {
+    try {
+      const response = await fetchData(page, pageSize);
+      allData = [...allData, ...response.content];
+      totalPages = response.totalPages;
+      page++;
+    } catch (error) {
+      console.error(`Error fetching data:`, error);
+      throw error;
+    }
+  }
+
+  return allData;
+};
