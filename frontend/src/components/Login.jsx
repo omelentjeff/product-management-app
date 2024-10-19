@@ -36,7 +36,7 @@ export default function Login() {
       );
 
       if (response.token) {
-        navigate("/protected"); // todo: navigate to some protected page
+        navigate("/dashboard");
       }
     } catch (error) {
       setErrorMessage("Invalid username or password");
