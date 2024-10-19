@@ -35,3 +35,14 @@ export const fetchAllData = async () => {
 
   return allData;
 };
+
+export const fetchSingleData = async (id) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching data:`, error);
+    throw error;
+  }
+};
