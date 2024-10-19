@@ -14,6 +14,7 @@ import { CircularProgress, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Search from "./Search";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -91,6 +92,9 @@ export default function ProductTable() {
 
   return (
     <>
+      <Box sx={{ mb: 4 }}>
+        <Search setQuery={setQuery} resetQuery={resetQuery} />
+      </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         {isLoading ? (
           <Box
