@@ -48,7 +48,7 @@ public class ProductService {
     @Transactional
     public ProductDTO save(ProductDTO productDTO, MultipartFile file) throws IOException {
         Product tempProduct = productMapper.toEntity(productDTO);
-        
+
         if (file != null && !file.isEmpty()) {
             String imagePath = saveImage(file);
             tempProduct.setPhotoUrl(imagePath);
@@ -59,11 +59,17 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile file) throws IOException {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
 
         productMapper.updateProductFromDto(productDTO, existingProduct);
+
+        // If there's a new image, update the photoUrl
+        if (file != null && !file.isEmpty()) {
+            String imagePath = saveImage(file);
+            existingProduct.setPhotoUrl(imagePath);
+        }
 
         productRepository.save(existingProduct);
         return productMapper.toDTO(existingProduct);
