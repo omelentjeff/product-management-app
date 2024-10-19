@@ -10,8 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -35,8 +37,9 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductDTO productDTO) {
-        ProductDTO savedProduct = productService.save(productDTO);
+    public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestPart("product") ProductDTO productDTO,
+                                                  @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+        ProductDTO savedProduct = productService.save(productDTO, file);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
