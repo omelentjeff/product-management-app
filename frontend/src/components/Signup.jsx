@@ -57,7 +57,11 @@ export default function Signup() {
     }
 
     try {
-      const response = await authService.register(username, password);
+      const response = await authService.register(
+        username,
+        password,
+        formData.role
+      );
       if (response.token) {
         navigate("/home"); // Redirect to dashboard on success
       }
