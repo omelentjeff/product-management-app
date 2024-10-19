@@ -59,7 +59,7 @@ export default function Signup() {
     try {
       const response = await authService.register(username, password);
       if (response.token) {
-        navigate("/protected"); // todo: navigate to some protected page
+        navigate("/dashboard");
       } else {
         setErrorMessage("Registration failed.");
       }
