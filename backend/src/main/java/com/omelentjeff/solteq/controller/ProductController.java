@@ -50,8 +50,10 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProductById(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
-        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
+    public ResponseEntity<ProductDTO> updateProductById(@PathVariable Long id,
+                                                        @Valid @RequestPart("product") ProductDTO productDTO,
+                                                        @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+        ProductDTO updatedProduct = productService.updateProduct(id, productDTO, file);
         return ResponseEntity.ok(updatedProduct);
     }
 
