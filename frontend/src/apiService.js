@@ -1,17 +1,32 @@
-const baseUrl = import.meta.env.VITE_API_URL;
+import axios from "axios";
+import authService from "./authService";
 
-export const fetchData = async (page = 0, pageSize = 10, sort = "") => {
+const baseUrl = import.meta.env.VITE_API_URL;
+const token = authService.getCurrentUser();
+
+export const fetchData = async (page = 0, pageSize = 10, sort = "ASC") => {
   try {
+    console.log("Token:", token);
     console.log("API Base URL:", baseUrl);
-    const response = await fetch(
-      `${baseUrl}?page=${page}&size=${pageSize}&sort=${sort}`
+
+    const response = await axios.get(
+      `${baseUrl}?page=${page}&size=${pageSize}&sort=${sort}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
-    const data = await response.json();
-    return data;
+    console.log("Data fetched:", response.data);
+    return response.data;
   } catch (error) {
     console.error(`Error fetching data:`, error);
-    throw error;
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while fetching data.")
+    );
   }
 };
 
@@ -38,30 +53,43 @@ export const fetchAllData = async () => {
 
 export const fetchSingleData = async (id) => {
   try {
-    const response = await fetch(`${baseUrl}/${id}`);
-    const data = await response.json();
-    return data;
+    const response = await axios.get(`${baseUrl}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error(`Error fetching data:`, error);
-    throw error;
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while fetching single data.")
+    );
   }
 };
 
 export const fetchSearchData = async (query) => {
   console.log("Searching for: ", query);
   try {
-    const response = await fetch(`${baseUrl}/search?name=${query}`);
+    const response = await axios.get(`${baseUrl}/search?name=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     // Check for 204 No Content
     if (response.status === 204) {
-      // Return empty content and no pages if the result is empty
       return { content: [], totalPages: 0 };
     }
 
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
-    console.error(`Error fetching data:`, error);
-    throw error;
+    console.error(`Error fetching search data:`, error);
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while searching data.")
+    );
   }
 };
