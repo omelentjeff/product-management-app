@@ -1,10 +1,13 @@
 package com.omelentjeff.solteq.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableWebSecurity
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
@@ -15,4 +18,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Serve images from the uploads/images directory
+        registry.addResourceHandler("/uploads/**") // Note the leading slash
+                .addResourceLocations("file:src/main/resources/static/uploads/"); // Adjusted to match your new path
+    }
+
 }

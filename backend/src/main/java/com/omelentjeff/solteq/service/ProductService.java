@@ -28,7 +28,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private static final String IMAGE_DIR = "uploads/images/";
+    private static final String IMAGE_DIR = "src/main/resources/static/uploads/images/";
 
     @Cacheable(value = "products", key = "'page:' + #pageable.pageNumber + ',size:' + #pageable.pageSize + ',sort:' + #pageable.sort.toString()")
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
@@ -86,9 +86,11 @@ public class ProductService {
     }
 
     public String saveImage(MultipartFile file) throws IOException {
+        System.out.println("Saving image");
         if (file.isEmpty()) {
             return null;
         }
+
         // Ensure directory exists
         File dir = new File(IMAGE_DIR);
         if (!dir.exists()) {
@@ -100,6 +102,7 @@ public class ProductService {
         Path path = Paths.get(IMAGE_DIR + fileName);
         Files.copy(file.getInputStream(), path);
 
-        return path.toString();
+        // Return relative URL instead of absolute path
+        return "uploads/" + fileName; // Adjusted relative URL
     }
 }

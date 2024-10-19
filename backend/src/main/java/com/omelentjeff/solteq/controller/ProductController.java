@@ -36,9 +36,22 @@ public class ProductController {
         return ResponseEntity.ok(tempProduct);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestPart("product") ProductDTO productDTO,
-                                                  @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+    @PostMapping(value = "/", consumes = "application/json")
+    public ResponseEntity<ProductDTO> saveProductWithoutImage(@Valid @RequestBody ProductDTO productDTO) throws IOException {
+        ProductDTO savedProduct = productService.save(productDTO, null);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedProduct.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(savedProduct);
+    }
+
+    // Accept multipart/form-data (with image upload)
+    @PostMapping(value = "/", consumes = {"multipart/form-data"})
+    public ResponseEntity<ProductDTO> saveProductWithImage(@RequestPart("product") ProductDTO productDTO,
+                                                           @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO savedProduct = productService.save(productDTO, file);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -49,10 +62,17 @@ public class ProductController {
         return ResponseEntity.created(location).body(savedProduct);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProductById(@PathVariable Long id,
-                                                        @Valid @RequestPart("product") ProductDTO productDTO,
-                                                        @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+    @PatchMapping(value = "/{id}", consumes = "application/json")
+    public ResponseEntity<ProductDTO> updateProductByIdWithoutImage(@PathVariable Long id,
+                                                                    @Valid @RequestBody ProductDTO productDTO) throws IOException {
+        ProductDTO updatedProduct = productService.updateProduct(id, productDTO, null);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    @PatchMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<ProductDTO> updateProductByIdWithImage(@PathVariable Long id,
+                                                                 @RequestPart("product") ProductDTO productDTO,
+                                                                 @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO, file);
         return ResponseEntity.ok(updatedProduct);
     }
