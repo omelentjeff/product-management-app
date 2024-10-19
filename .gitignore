@@ -81,3 +81,5 @@ Thumbs.db
 .expo/
 .expo-shared/
 
+# image directory
+/backend/src/main/resources/static/uploads/images/
