@@ -16,9 +16,12 @@ const register = async (username, password) => {
 
     throw new Error("Registration failed");
   } catch (error) {
-    throw (
-      error.response?.data || new Error("An error occurred during registration")
-    );
+    // Check if the error response has the message and handle it
+    if (error.response && error.response.data && error.response.data.message) {
+      throw new Error(error.response.data.message); // Throws the custom error message from backend
+    } else {
+      throw new Error("An error occurred during registration");
+    }
   }
 };
 

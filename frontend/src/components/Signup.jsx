@@ -59,17 +59,21 @@ export default function Signup() {
     try {
       const response = await authService.register(username, password);
       if (response.token) {
-        navigate("/dashboard");
-      } else {
-        setErrorMessage("Registration failed.");
+        navigate("/dashboard"); // Redirect to dashboard on success
       }
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.message ||
-          "An error occurred during registration."
-      );
+      console.error("Error during signup:", error);
+
+      // Display the error message returned by the backend
+      if (error.message) {
+        setErrorMessage(error.message); // Show the backend's error message like "username taken"
+      } else {
+        setErrorMessage(
+          "An error occurred while registering. Please try again."
+        );
+      }
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop the loading spinner
     }
   };
 
