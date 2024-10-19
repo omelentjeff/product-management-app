@@ -10,7 +10,7 @@ const register = async (username, password) => {
     });
 
     if (response.data.token) {
-      localStorage.setItem("token", JSON.stringify(response.data.token)); // Store JWT token
+      localStorage.setItem("token", response.data.token);
       return response.data;
     }
 
@@ -30,7 +30,7 @@ const authenticate = async (username, password) => {
     });
 
     if (response.data.token) {
-      localStorage.setItem("token", JSON.stringify(response.data.token));
+      localStorage.setItem("token", response.data.token);
       return response.data;
     }
 
@@ -48,7 +48,7 @@ const logout = () => {
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("token"));
+  return localStorage.getItem("token");
 };
 
 export default {
