@@ -46,8 +46,14 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO save(ProductDTO productDTO) {
+    public ProductDTO save(ProductDTO productDTO, MultipartFile file) throws IOException {
         Product tempProduct = productMapper.toEntity(productDTO);
+        
+        if (file != null && !file.isEmpty()) {
+            String imagePath = saveImage(file);
+            tempProduct.setPhotoUrl(imagePath);
+        }
+
         Product savedProduct = productRepository.save(tempProduct);
         return productMapper.toDTO(savedProduct);
     }
