@@ -12,7 +12,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,5 +71,23 @@ public class ProductService {
                 .toList();
 
         return new PageImpl<>(productDTOS, pageable, productPage.getTotalElements());
+    }
+
+    public String saveImage(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            return null;
+        }
+        // Ensure directory exists
+        File dir = new File(IMAGE_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        // Save the file to the directory
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        Path path = Paths.get(IMAGE_DIR + fileName);
+        Files.copy(file.getInputStream(), path);
+
+        return path.toString();
     }
 }
