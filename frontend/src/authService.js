@@ -42,3 +42,7 @@ const authenticate = async (username, password) => {
     );
   }
 };
+
+const logout = () => {
+  localStorage.removeItem("token");
+};
