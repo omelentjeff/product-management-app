@@ -19,7 +19,7 @@ import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import authService from "../authService";
 
-export default function SignUp() {
+export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerifyPassword, setShowVerifyPassword] = useState(false);
   const [formData, setFormData] = useState({
