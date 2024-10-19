@@ -15,6 +15,7 @@ import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Search from "./Search";
+import ProductDialog from "./ProductDialog";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -151,7 +152,11 @@ export default function ProductTable() {
                     <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                       {columns.map((column) => (
                         <TableCell key={column.id}>
-                          {column.id !== "details" ? row[column.id] : null}
+                          {column.id !== "details" ? (
+                            row[column.id]
+                          ) : (
+                            <ProductDialog product={row} text="Show Details" />
+                          )}
                         </TableCell>
                       ))}
                     </TableRow>
