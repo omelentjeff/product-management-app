@@ -73,7 +73,7 @@ export default function ProductTable() {
   };
 
   const handleChangePage = (event, value) => {
-    setIsLoading(true);
+    console.log("Page changed to:", value);
     setPage(value);
   };
 

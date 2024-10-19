@@ -2,9 +2,9 @@ import axios from "axios";
 import authService from "./authService";
 
 const baseUrl = import.meta.env.VITE_API_URL;
-const token = authService.getCurrentUser();
 
 export const fetchData = async (page = 0, pageSize = 10, sort = "ASC") => {
+  const token = authService.getCurrentUser();
   try {
     console.log("Token:", token);
     console.log("API Base URL:", baseUrl);
@@ -31,6 +31,7 @@ export const fetchData = async (page = 0, pageSize = 10, sort = "ASC") => {
 };
 
 export const fetchAllData = async () => {
+  const token = authService.getCurrentUser();
   let allData = [];
   let page = 0;
   let pageSize = 10;
@@ -52,6 +53,7 @@ export const fetchAllData = async () => {
 };
 
 export const fetchSingleData = async (id) => {
+  const token = authService.getCurrentUser();
   try {
     const response = await axios.get(`${baseUrl}/${id}`, {
       headers: {
@@ -70,6 +72,7 @@ export const fetchSingleData = async (id) => {
 };
 
 export const fetchSearchData = async (query) => {
+  const token = authService.getCurrentUser();
   console.log("Searching for: ", query);
   try {
     const response = await axios.get(`${baseUrl}/search?name=${query}`, {
