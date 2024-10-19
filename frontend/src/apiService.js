@@ -46,3 +46,22 @@ export const fetchSingleData = async (id) => {
     throw error;
   }
 };
+
+export const fetchSearchData = async (query) => {
+  console.log("Searching for: ", query);
+  try {
+    const response = await fetch(`${baseUrl}/search?name=${query}`);
+
+    // Check for 204 No Content
+    if (response.status === 204) {
+      // Return empty content and no pages if the result is empty
+      return { content: [], totalPages: 0 };
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching data:`, error);
+    throw error;
+  }
+};
