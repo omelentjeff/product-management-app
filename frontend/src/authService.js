@@ -21,3 +21,24 @@ const register = async (username, password) => {
     );
   }
 };
+
+const authenticate = async (username, password) => {
+  try {
+    const response = await axios.post(`${API_URL}/authenticate`, {
+      username,
+      password,
+    });
+
+    if (response.data.token) {
+      localStorage.setItem("token", JSON.stringify(response.data.token));
+      return response.data;
+    }
+
+    throw new Error("Authentication failed");
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("An error occurred during authentication")
+    );
+  }
+};
