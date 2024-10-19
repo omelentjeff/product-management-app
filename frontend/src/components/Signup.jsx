@@ -59,7 +59,7 @@ export default function Signup() {
     try {
       const response = await authService.register(username, password);
       if (response.token) {
-        navigate("/dashboard"); // Redirect to dashboard on success
+        navigate("/home"); // Redirect to dashboard on success
       }
     } catch (error) {
       console.error("Error during signup:", error);

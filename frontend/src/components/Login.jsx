@@ -36,7 +36,7 @@ export default function Login() {
       );
 
       if (response.token) {
-        navigate("/dashboard");
+        navigate("/home");
       }
     } catch (error) {
       setErrorMessage("Invalid username or password");
