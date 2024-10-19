@@ -31,7 +31,6 @@ export const fetchData = async (page = 0, pageSize = 10, sort = "ASC") => {
 };
 
 export const fetchAllData = async () => {
-  const token = authService.getCurrentUser();
   let allData = [];
   let page = 0;
   let pageSize = 10;
