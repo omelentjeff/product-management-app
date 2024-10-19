@@ -28,7 +28,7 @@ public class AuthenticationService {
         var user = UserEntity.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(Role.valueOf(request.getRole().toUpperCase()))
                 .build();
 
         userRepository.save(user);
