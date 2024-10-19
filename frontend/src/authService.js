@@ -50,3 +50,10 @@ const logout = () => {
 const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("token"));
 };
+
+export default {
+  register,
+  authenticate,
+  logout,
+  getCurrentUser,
+};
