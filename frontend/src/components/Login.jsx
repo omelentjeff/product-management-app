@@ -17,7 +17,7 @@ import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import authService from "../authService";
 
-function Login() {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -122,5 +122,3 @@ function Login() {
     </Container>
   );
 }
-
-export default Login;
