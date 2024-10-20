@@ -184,23 +184,29 @@ export default function StationDialog({ product, text }) {
                           Nutritional Facts
                         </Typography>
                         <Box sx={{ textAlign: "left", margin: 0, padding: 0 }}>
-                          {NUTRITIONAL_FACTS.map((fact) => {
-                            const value =
-                              productDetails.nutritionalFact[fact.key];
-                            // Skip if the value is null
-                            if (value !== null) {
-                              return (
-                                <Typography
-                                  variant="body1"
-                                  color="textSecondary"
-                                  key={fact.key}
-                                >
-                                  {fact.label}: {value} {fact.unit}
-                                </Typography>
-                              );
-                            }
-                            return null; // Skip rendering for null values
-                          })}
+                          {productDetails.nutritionalFact ? (
+                            NUTRITIONAL_FACTS.map((fact) => {
+                              const value =
+                                productDetails.nutritionalFact[fact.key];
+                              // Skip if the value is null
+                              if (value !== null) {
+                                return (
+                                  <Typography
+                                    variant="body1"
+                                    color="textSecondary"
+                                    key={fact.key}
+                                  >
+                                    {fact.label}: {value} {fact.unit}
+                                  </Typography>
+                                );
+                              }
+                              return null; // Skip rendering for null values
+                            })
+                          ) : (
+                            <Typography variant="body1" color="textSecondary">
+                              Nutritional facts are not available.
+                            </Typography>
+                          )}
                         </Box>
                       </Box>
                     )}
