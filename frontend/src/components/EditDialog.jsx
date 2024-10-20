@@ -72,10 +72,22 @@ export default function EditDialog({ product, text, onUpdate }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProductDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    // Check if the input belongs to nutritional facts
+    if (NUTRITIONAL_FACTS.some((fact) => fact.key === name)) {
+      setProductDetails((prev) => ({
+        ...prev,
+        nutritionalFact: {
+          ...prev.nutritionalFact,
+          [name]: value, // Update the specific nutritional fact
+        },
+      }));
+    } else {
+      setProductDetails((prev) => ({
+        ...prev,
+        [name]: value, // Update other product details
+      }));
+    }
   };
 
   const handleSave = async () => {
@@ -237,7 +249,8 @@ export default function EditDialog({ product, text, onUpdate }) {
                                   key={fact.key}
                                   label={fact.label}
                                   name={fact.key}
-                                  value={value !== null ? value : ""}
+                                  type="number"
+                                  value={value || ""}
                                   onChange={handleInputChange}
                                   margin="normal"
                                   fullWidth
