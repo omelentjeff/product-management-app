@@ -116,6 +116,26 @@ export const saveProductDetails = async (product) => {
   }
 };
 
+export const saveProductImage = async (formData) => {
+  console.log("Saving product image...");
+  const token = authService.getCurrentUser();
+  try {
+    const response = await axios.post(baseUrl, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", // image content type
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(`Error saving product image:`, error);
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while saving product image.")
+    );
+  }
+};
+
 export const updateProductDetails = async (id, product) => {
   console.log("Updating product details...");
   const token = authService.getCurrentUser();
