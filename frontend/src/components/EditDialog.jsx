@@ -7,7 +7,14 @@ import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { Box, Grid, CircularProgress, Tabs, Tab } from "@mui/material";
+import {
+  Box,
+  Grid,
+  CircularProgress,
+  Tabs,
+  Tab,
+  TextField,
+} from "@mui/material";
 import { fetchSingleData } from "../apiService";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -19,7 +26,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-// Define the nutritional facts object
 const NUTRITIONAL_FACTS = [
   { label: "Calories per 100g", key: "caloriesPer100g", unit: "kcal" },
   { label: "Kilojoules per 100g", key: "kilojoulesPer100g", unit: "kJ" },
@@ -64,6 +70,14 @@ export default function EditDialog({ product, text }) {
     setTabIndex(newValue);
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProductDetails((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const BACKEND_URL = "http://localhost:8080/";
 
   return (
@@ -90,7 +104,6 @@ export default function EditDialog({ product, text }) {
         ) : (
           productDetails && (
             <>
-              {/* Dialog Title */}
               <DialogTitle
                 sx={{
                   m: 0,
@@ -102,10 +115,9 @@ export default function EditDialog({ product, text }) {
                 }}
                 id="customized-dialog-title"
               >
-                {productDetails.name}
+                Edit {productDetails.name}
               </DialogTitle>
 
-              {/* Close Button */}
               <IconButton
                 aria-label="close"
                 onClick={handleClose}
@@ -119,7 +131,6 @@ export default function EditDialog({ product, text }) {
                 <CloseIcon />
               </IconButton>
 
-              {/* Tabs at the top */}
               <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
@@ -132,10 +143,8 @@ export default function EditDialog({ product, text }) {
                 <Tab label="Nutritional Facts" />
               </Tabs>
 
-              {/* Main Content */}
               <DialogContent dividers>
                 <Grid container spacing={2} sx={{ mt: 2 }}>
-                  {/* Left: Image */}
                   <Grid
                     item
                     xs={12}
@@ -163,7 +172,6 @@ export default function EditDialog({ product, text }) {
                     )}
                   </Grid>
 
-                  {/* Right: Content Based on Tab */}
                   <Grid
                     item
                     xs={12}
@@ -174,40 +182,51 @@ export default function EditDialog({ product, text }) {
                   >
                     {tabIndex === 0 && (
                       <Box textAlign="center">
-                        <Typography variant="h6" gutterBottom>
-                          Description
-                        </Typography>
-                        <Typography variant="body1" color="textSecondary">
-                          Manufacturer: {productDetails.manufacturer}
-                        </Typography>
-                        <Typography variant="body1" color="textSecondary">
-                          Weight: {productDetails.weight}g
-                        </Typography>
+                        <TextField
+                          label="Name"
+                          name="name"
+                          value={productDetails.name || ""}
+                          onChange={handleInputChange}
+                          fullWidth
+                          margin="normal"
+                        />
+                        <TextField
+                          label="Manufacturer"
+                          name="manufacturer"
+                          value={productDetails.manufacturer || ""}
+                          onChange={handleInputChange}
+                          fullWidth
+                          margin="normal"
+                        />
+                        <TextField
+                          label="Weight (g)"
+                          name="weight"
+                          type="number"
+                          value={productDetails.weight || ""}
+                          onChange={handleInputChange}
+                          fullWidth
+                          margin="normal"
+                        />
                       </Box>
                     )}
                     {tabIndex === 1 && (
                       <Box textAlign="center">
-                        <Typography variant="h6" gutterBottom>
-                          Nutritional Facts
-                        </Typography>
                         <Box sx={{ textAlign: "left", margin: 0, padding: 0 }}>
                           {productDetails.nutritionalFact ? (
                             NUTRITIONAL_FACTS.map((fact) => {
                               const value =
                                 productDetails.nutritionalFact[fact.key];
-                              // Skip if the value is null
-                              if (value !== null) {
-                                return (
-                                  <Typography
-                                    variant="body1"
-                                    color="textSecondary"
-                                    key={fact.key}
-                                  >
-                                    {fact.label}: {value} {fact.unit}
-                                  </Typography>
-                                );
-                              }
-                              return null; // Skip rendering for null values
+                              return (
+                                <TextField
+                                  key={fact.key}
+                                  label={fact.label}
+                                  name={fact.key}
+                                  value={value !== null ? value : ""}
+                                  onChange={handleInputChange}
+                                  margin="normal"
+                                  fullWidth
+                                />
+                              );
                             })
                           ) : (
                             <Typography variant="body1" color="textSecondary">
@@ -220,6 +239,17 @@ export default function EditDialog({ product, text }) {
                   </Grid>
                 </Grid>
               </DialogContent>
+
+              {/* Save Button */}
+              <Box display="flex" justifyContent="center" sx={{ mb: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSave}
+                >
+                  Save Changes
+                </Button>
+              </Box>
             </>
           )
         )}
