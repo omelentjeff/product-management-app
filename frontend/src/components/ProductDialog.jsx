@@ -38,7 +38,7 @@ export default function StationDialog({ product, text }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [tabIndex, setTabIndex] = useState(0); // To handle the tab switching
+  const [tabIndex, setTabIndex] = useState(0);
 
   const handleClickOpen = async () => {
     setOpen(true);
@@ -46,6 +46,7 @@ export default function StationDialog({ product, text }) {
 
     try {
       const details = await fetchSingleData(product.id);
+      console.log("Product details fetched:", details);
       setProductDetails(details);
     } catch (error) {
       console.error("Failed to fetch product details:", error);
@@ -63,7 +64,6 @@ export default function StationDialog({ product, text }) {
     setTabIndex(newValue);
   };
 
-  // Backend URL (adjust as per your backend's address)
   const BACKEND_URL = "http://localhost:8080/";
 
   return (
@@ -143,17 +143,24 @@ export default function StationDialog({ product, text }) {
                     display="flex"
                     justifyContent="center"
                   >
-                    <img
-                      src={`${BACKEND_URL}${productDetails.photoUrl}`}
-                      alt={productDetails.name}
-                      style={{
-                        width: "70%",
-                        height: "auto",
-                        maxHeight: "300px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                      }}
-                    />
+                    {productDetails.photoUrl &&
+                    productDetails.photoUrl !== "http://example.com" ? (
+                      <img
+                        src={`${BACKEND_URL}${productDetails.photoUrl}`}
+                        alt={productDetails.name}
+                        style={{
+                          width: "70%",
+                          height: "auto",
+                          maxHeight: "300px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                        }}
+                      />
+                    ) : (
+                      <Typography variant="body1" color="textSecondary">
+                        Image coming soon...
+                      </Typography>
+                    )}
                   </Grid>
 
                   {/* Right: Content Based on Tab */}
