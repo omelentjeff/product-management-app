@@ -86,7 +86,6 @@ public class ProductService {
     }
 
     public String saveImage(MultipartFile file) throws IOException {
-        System.out.println("Saving image");
         if (file.isEmpty()) {
             return null;
         }
@@ -94,7 +93,9 @@ public class ProductService {
         // Ensure directory exists
         File dir = new File(IMAGE_DIR);
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                throw new IOException("Failed to create directories for image upload.");
+            }
         }
 
         // Save the file to the directory
@@ -102,7 +103,7 @@ public class ProductService {
         Path path = Paths.get(IMAGE_DIR + fileName);
         Files.copy(file.getInputStream(), path);
 
-        // Return relative URL instead of absolute path
-        return "uploads/" + fileName; // Adjusted relative URL
+        // Return relative URL for the frontend
+        return "uploads/images/" + fileName; // Correct path to match resource handler
     }
 }
