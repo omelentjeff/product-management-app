@@ -19,6 +19,21 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
+// Define the nutritional facts object
+const NUTRITIONAL_FACTS = [
+  { label: "Calories per 100g", key: "caloriesPer100g", unit: "kcal" },
+  { label: "Kilojoules per 100g", key: "kilojoulesPer100g", unit: "kJ" },
+  { label: "Fat", key: "fat", unit: "g" },
+  { label: "Carbohydrates", key: "carbohydrates", unit: "g" },
+  { label: "Sugars", key: "sugars", unit: "g" },
+  { label: "Polyols", key: "polyols", unit: "g" },
+  { label: "Fibers", key: "fibers", unit: "g" },
+  { label: "Protein", key: "protein", unit: "g" },
+  { label: "Sodium", key: "sodium", unit: "mg" },
+  { label: "Vitamin C", key: "vitaminC", unit: "mg" },
+  { label: "Calcium", key: "calcium", unit: "mg" },
+];
+
 export default function StationDialog({ product, text }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
@@ -75,6 +90,7 @@ export default function StationDialog({ product, text }) {
         ) : (
           productDetails && (
             <>
+              {/* Dialog Title */}
               <DialogTitle
                 sx={{
                   m: 0,
@@ -88,6 +104,8 @@ export default function StationDialog({ product, text }) {
               >
                 {productDetails.name}
               </DialogTitle>
+
+              {/* Close Button */}
               <IconButton
                 aria-label="close"
                 onClick={handleClose}
@@ -101,28 +119,35 @@ export default function StationDialog({ product, text }) {
                 <CloseIcon />
               </IconButton>
 
-              <DialogContent dividers>
-                {/* Tabs for switching between Product Details and Nutritional Facts */}
-                <Tabs
-                  value={tabIndex}
-                  onChange={handleTabChange}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  variant="fullWidth"
-                  centered
-                >
-                  <Tab label="Product Details" />
-                  <Tab label="Nutritional Facts" />
-                </Tabs>
+              {/* Tabs at the top */}
+              <Tabs
+                value={tabIndex}
+                onChange={handleTabChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+                centered
+              >
+                <Tab label="Product Details" />
+                <Tab label="Nutritional Facts" />
+              </Tabs>
 
+              {/* Main Content */}
+              <DialogContent dividers>
                 <Grid container spacing={2} sx={{ mt: 2 }}>
                   {/* Left: Image */}
-                  <Grid item xs={12} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    display="flex"
+                    justifyContent="center"
+                  >
                     <img
                       src={`${BACKEND_URL}${productDetails.photoUrl}`}
                       alt={productDetails.name}
                       style={{
-                        width: "50%",
+                        width: "70%",
                         height: "auto",
                         maxHeight: "300px",
                         objectFit: "cover",
@@ -131,28 +156,52 @@ export default function StationDialog({ product, text }) {
                     />
                   </Grid>
 
-                  {/* Right: Product Details or Nutritional Facts */}
-                  <Grid item xs={12} md={6}>
+                  {/* Right: Content Based on Tab */}
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
                     {tabIndex === 0 && (
-                      <Box>
+                      <Box textAlign="center">
                         <Typography variant="h6" gutterBottom>
                           Description
                         </Typography>
                         <Typography variant="body1" color="textSecondary">
-                          {productDetails.description}
+                          Manufacturer: {productDetails.manufacturer}
                         </Typography>
-                        {/* Add more product details here */}
+                        <Typography variant="body1" color="textSecondary">
+                          Weight: {productDetails.weight}g
+                        </Typography>
                       </Box>
                     )}
                     {tabIndex === 1 && (
-                      <Box>
+                      <Box textAlign="center">
                         <Typography variant="h6" gutterBottom>
                           Nutritional Facts
                         </Typography>
-                        <Typography variant="body1" color="textSecondary">
-                          {/* Nutritional facts content goes here */}
-                          {productDetails.nutritionalFacts}
-                        </Typography>
+                        <Box sx={{ textAlign: "left", margin: 0, padding: 0 }}>
+                          {NUTRITIONAL_FACTS.map((fact) => {
+                            const value =
+                              productDetails.nutritionalFact[fact.key];
+                            // Skip if the value is null
+                            if (value !== null) {
+                              return (
+                                <Typography
+                                  variant="body1"
+                                  color="textSecondary"
+                                  key={fact.key}
+                                >
+                                  {fact.label}: {value} {fact.unit}
+                                </Typography>
+                              );
+                            }
+                            return null; // Skip rendering for null values
+                          })}
+                        </Box>
                       </Box>
                     )}
                   </Grid>
