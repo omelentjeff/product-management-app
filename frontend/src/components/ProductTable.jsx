@@ -16,6 +16,8 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Search from "./Search";
 import ProductDialog from "./ProductDialog";
+import authService from "../authService";
+import { jwtDecode } from "jwt-decode";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -35,8 +37,13 @@ export default function ProductTable() {
     direction: "asc",
   });
   const [query, setQuery] = useState("");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
+    const token = authService.getCurrentUser();
+    const userRoles = jwtDecode(token);
+    setUserRole(userRoles.role[0].authority);
+
     const fetchProductData = async () => {
       setIsLoading(true);
       try {
@@ -155,7 +162,21 @@ export default function ProductTable() {
                           {column.id !== "details" ? (
                             row[column.id]
                           ) : (
-                            <ProductDialog product={row} text="Show Details" />
+                            <>
+                              <ProductDialog
+                                product={row}
+                                text="Show Details"
+                              />
+                              {userRole === "ROLE_ADMIN" && (
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  sx={{ ml: 2 }}
+                                >
+                                  EDIT
+                                </Button>
+                              )}
+                            </>
                           )}
                         </TableCell>
                       ))}
