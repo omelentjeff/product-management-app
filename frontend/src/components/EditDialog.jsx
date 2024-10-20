@@ -15,7 +15,11 @@ import {
   Tab,
   TextField,
 } from "@mui/material";
-import { fetchSingleData, updateProduct } from "../apiService";
+import {
+  fetchSingleData,
+  updateProductDetails,
+  uploadProductImage,
+} from "../apiService";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -45,6 +49,7 @@ export default function EditDialog({ product, text, onUpdate }) {
   const [productDetails, setProductDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleClickOpen = async () => {
     setOpen(true);
@@ -91,18 +96,43 @@ export default function EditDialog({ product, text, onUpdate }) {
   };
 
   const handleSave = async () => {
-    try {
-      const response = await updateProduct(productDetails);
-      console.log("Response:", response);
+    const productPayload = {
+      name: productDetails.name,
+      manufacturer: productDetails.manufacturer,
+      weight: productDetails.weight,
+      nutritionalFact: productDetails.nutritionalFact,
+    };
 
-      if (!response.status === 200) {
-        throw new Error("Failed to update product");
+    try {
+      // send product details as JSON
+      const response = await updateProductDetails(product.id, productPayload);
+      console.log("Product Details Response:", response);
+
+      // if image was selected, upload it
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append("image", productDetails.photoUrl);
+
+        const imageResponse = await uploadProductImage(product.id, formData);
+        console.log("Image Upload Response:", imageResponse);
       }
 
+      // After both updates, call onUpdate and close the dialog
       onUpdate(response.data);
       handleClose();
     } catch (error) {
       console.error("Error updating product:", error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file));
+      setProductDetails((prev) => ({
+        ...prev,
+        photoUrl: file,
+      }));
     }
   };
 
@@ -185,12 +215,15 @@ export default function EditDialog({ product, text, onUpdate }) {
                       flexDirection="column"
                       alignItems="center"
                     >
-                      {productDetails.photoUrl ? (
+                      {selectedImage || productDetails.photoUrl ? (
                         <img
-                          src={`${BACKEND_URL}${productDetails.photoUrl}`}
+                          src={
+                            selectedImage ||
+                            `${BACKEND_URL}${productDetails.photoUrl}`
+                          }
                           alt={productDetails.name}
                           style={{
-                            width: "100%",
+                            width: "70%",
                             height: "auto",
                             maxHeight: "300px",
                             objectFit: "cover",
@@ -208,7 +241,7 @@ export default function EditDialog({ product, text, onUpdate }) {
                         style={{ display: "none" }}
                         id="image-upload"
                         type="file"
-                        onChange={console.log()}
+                        onChange={handleImageChange} // Use the handler to capture file input
                       />
                       <label htmlFor="image-upload">
                         <Button
@@ -217,7 +250,7 @@ export default function EditDialog({ product, text, onUpdate }) {
                           color="primary"
                           sx={{ mt: 2 }}
                         >
-                          Select Image
+                          Upload Image
                         </Button>
                       </label>
                     </Box>
