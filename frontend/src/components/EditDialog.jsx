@@ -40,7 +40,7 @@ const NUTRITIONAL_FACTS = [
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
-export default function EditDialog({ product, text }) {
+export default function EditDialog({ product, text, onUpdate }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +87,7 @@ export default function EditDialog({ product, text }) {
         throw new Error("Failed to update product");
       }
 
+      onUpdate(response.data);
       handleClose();
     } catch (error) {
       console.error("Error updating product:", error);

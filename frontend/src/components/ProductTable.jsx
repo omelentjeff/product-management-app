@@ -68,6 +68,14 @@ export default function ProductTable() {
     fetchProductData();
   }, [page, sortConfig, query]);
 
+  const handleUpdateProduct = (updatedProduct) => {
+    setData((prevData) =>
+      prevData.map((product) =>
+        product.id === updatedProduct.id ? updatedProduct : product
+      )
+    );
+  };
+
   const resetQuery = () => {
     setQuery("");
     setPage(1);
@@ -169,7 +177,11 @@ export default function ProductTable() {
                                 text="Show Details"
                               />
                               {userRole === "ROLE_ADMIN" && (
-                                <EditDialog product={row} text="Edit" />
+                                <EditDialog
+                                  product={row}
+                                  text="Edit"
+                                  onUpdate={handleUpdateProduct}
+                                />
                               )}
                             </Box>
                           )}
