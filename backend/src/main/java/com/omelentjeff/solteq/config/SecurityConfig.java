@@ -26,13 +26,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/v1/auth/**")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST,"/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH,"/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/**").hasRole("ADMIN")
-                        .anyRequest()
-                        .authenticated()
+                        // Allow access to static resources like images
+                        .requestMatchers("/uploads/images/**").permitAll()
+
+                        // Public access for auth-related endpoints
+                        .requestMatchers("api/v1/auth/**").permitAll()
+
+                        // Admin permissions for POST, PATCH, and DELETE
+                        .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+
+                        // All other requests must be authenticated
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
