@@ -111,6 +111,16 @@ export default function ProductTable() {
     <>
       <Box sx={{ mb: 4 }}>
         <Search setQuery={setQuery} resetQuery={resetQuery} />
+        {userRole === "ROLE_ADMIN" && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={console.log()}
+            sx={{ mt: 2 }}
+          >
+            Add New Product
+          </Button>
+        )}
       </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         {isLoading ? (
