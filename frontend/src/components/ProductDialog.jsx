@@ -21,8 +21,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 // Define the nutritional facts object
 const NUTRITIONAL_FACTS = [
-  { label: "Calories per 100g", key: "caloriesPer100g", unit: "kcal" },
-  { label: "Kilojoules per 100g", key: "kilojoulesPer100g", unit: "kJ" },
+  { label: "Energy", key: "energy", unit: "kcal/kJ" },
   { label: "Fat", key: "fat", unit: "g" },
   { label: "Carbohydrates", key: "carbohydrates", unit: "g" },
   { label: "Sugars", key: "sugars", unit: "g" },
@@ -90,7 +89,6 @@ export default function StationDialog({ product, text }) {
         ) : (
           productDetails && (
             <>
-              {/* Dialog Title */}
               <DialogTitle
                 sx={{
                   m: 0,
@@ -105,7 +103,6 @@ export default function StationDialog({ product, text }) {
                 {productDetails.name}
               </DialogTitle>
 
-              {/* Close Button */}
               <IconButton
                 aria-label="close"
                 onClick={handleClose}
@@ -119,7 +116,6 @@ export default function StationDialog({ product, text }) {
                 <CloseIcon />
               </IconButton>
 
-              {/* Tabs at the top */}
               <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
@@ -132,9 +128,8 @@ export default function StationDialog({ product, text }) {
                 <Tab label="Nutritional Facts" />
               </Tabs>
 
-              {/* Main Content */}
               <DialogContent dividers>
-                <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid container spacing={3} sx={{ mt: 2 }}>
                   {/* Left: Image */}
                   <Grid
                     item
@@ -154,6 +149,7 @@ export default function StationDialog({ product, text }) {
                           maxHeight: "300px",
                           objectFit: "cover",
                           borderRadius: "8px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                         }}
                       />
                     ) : (
@@ -164,48 +160,93 @@ export default function StationDialog({ product, text }) {
                   </Grid>
 
                   {/* Right: Content Based on Tab */}
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
+                  <Grid item xs={12} md={6}>
                     {tabIndex === 0 && (
-                      <Box textAlign="center">
-                        <Typography variant="h6" gutterBottom>
-                          Description
-                        </Typography>
-                        <Typography variant="body1" color="textSecondary">
-                          Manufacturer: {productDetails.manufacturer}
-                        </Typography>
-                        <Typography variant="body1" color="textSecondary">
-                          Weight: {productDetails.weight}g
-                        </Typography>
+                      <Box>
+                        <Grid container spacing={3}>
+                          <Grid item xs={6}>
+                            <Typography
+                              variant="body1"
+                              color="textSecondary"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              Manufacturer:
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary">
+                              {productDetails.manufacturer}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Typography
+                              variant="body1"
+                              color="textSecondary"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              Weight:
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary">
+                              {productDetails.weight}g
+                            </Typography>
+                          </Grid>
+                        </Grid>
                       </Box>
                     )}
                     {tabIndex === 1 && (
-                      <Box textAlign="center">
-                        <Typography variant="h6" gutterBottom>
-                          Nutritional Facts
-                        </Typography>
-                        <Box sx={{ textAlign: "left", margin: 0, padding: 0 }}>
+                      <Box>
+                        <Grid container spacing={3}>
                           {productDetails.nutritionalFact ? (
                             NUTRITIONAL_FACTS.map((fact) => {
                               const value =
                                 productDetails.nutritionalFact[fact.key];
-                              // Skip if the value is null
-                              if (value !== null) {
-                                return (
-                                  <Typography
-                                    variant="body1"
-                                    color="textSecondary"
-                                    key={fact.key}
-                                  >
-                                    {fact.label}: {value} {fact.unit}
-                                  </Typography>
-                                );
+
+                              if (fact.key === "energy") {
+                                // Combine kcal and kJ for the Energy field
+                                const energyKcal =
+                                  productDetails.nutritionalFact
+                                    .caloriesPer100g;
+                                const energyKj =
+                                  productDetails.nutritionalFact
+                                    .kilojoulesPer100g;
+
+                                if (energyKcal !== null && energyKj !== null) {
+                                  return (
+                                    <Grid item xs={6} key={fact.key}>
+                                      <Typography
+                                        variant="body1"
+                                        color="textSecondary"
+                                        sx={{ fontWeight: "bold" }}
+                                      >
+                                        {fact.label}:
+                                      </Typography>
+                                      <Typography
+                                        variant="body1"
+                                        color="textSecondary"
+                                      >
+                                        {energyKcal} kcal / {energyKj} kJ
+                                      </Typography>
+                                    </Grid>
+                                  );
+                                }
+                              } else {
+                                if (value !== null) {
+                                  return (
+                                    <Grid item xs={6} key={fact.key}>
+                                      <Typography
+                                        variant="body1"
+                                        color="textSecondary"
+                                        sx={{ fontWeight: "bold" }}
+                                      >
+                                        {fact.label}:
+                                      </Typography>
+                                      <Typography
+                                        variant="body1"
+                                        color="textSecondary"
+                                      >
+                                        {value} {fact.unit}
+                                      </Typography>
+                                    </Grid>
+                                  );
+                                }
                               }
                               return null; // Skip rendering for null values
                             })
@@ -214,7 +255,7 @@ export default function StationDialog({ product, text }) {
                               Nutritional facts are not available.
                             </Typography>
                           )}
-                        </Box>
+                        </Grid>
                       </Box>
                     )}
                   </Grid>
