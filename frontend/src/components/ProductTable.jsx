@@ -18,6 +18,7 @@ import Search from "./Search";
 import ProductDialog from "./ProductDialog";
 import authService from "../authService";
 import { jwtDecode } from "jwt-decode";
+import EditDialog from "./EditDialog";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -173,7 +174,7 @@ export default function ProductTable() {
                                   color="primary"
                                   sx={{ ml: 2 }}
                                 >
-                                  EDIT
+                                  <EditDialog product={row} text="Edit" />
                                 </Button>
                               )}
                             </>
