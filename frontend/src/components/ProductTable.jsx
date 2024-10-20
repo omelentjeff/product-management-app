@@ -169,13 +169,7 @@ export default function ProductTable() {
                                 text="Show Details"
                               />
                               {userRole === "ROLE_ADMIN" && (
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  sx={{ ml: 2 }}
-                                >
-                                  <EditDialog product={row} text="Edit" />
-                                </Button>
+                                <EditDialog product={row} text="Edit" />
                               )}
                             </>
                           )}
