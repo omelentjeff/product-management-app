@@ -36,21 +36,9 @@ public class ProductController {
         return ResponseEntity.ok(tempProduct);
     }
 
-    @PostMapping(value = "", consumes = "application/json")
-    public ResponseEntity<ProductDTO> saveProductWithoutImage(@Valid @RequestBody ProductDTO productDTO) throws IOException {
-        ProductDTO savedProduct = productService.save(productDTO, null);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedProduct.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(savedProduct);
-    }
-
     // Accept multipart/form-data (with image upload)
-    @PostMapping(value = "", consumes = {"multipart/form-data"})
-    public ResponseEntity<ProductDTO> saveProductWithImage(@RequestPart(value = "product", required = false) ProductDTO productDTO,
+    @PostMapping(value = "", consumes = {"application/json", "multipart/form-data"})
+    public ResponseEntity<ProductDTO> save(@RequestPart(value = "product", required = false) ProductDTO productDTO,
                                                            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO savedProduct = productService.save(productDTO, file);
 
