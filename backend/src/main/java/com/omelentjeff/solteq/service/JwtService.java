@@ -32,6 +32,7 @@ public class JwtService {
                 .builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
+                .claim("role", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSigningKey())
