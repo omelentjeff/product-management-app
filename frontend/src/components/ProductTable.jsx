@@ -163,7 +163,7 @@ export default function ProductTable() {
                           {column.id !== "details" ? (
                             row[column.id]
                           ) : (
-                            <>
+                            <Box sx={{ display: "flex", gap: "10px" }}>
                               <ProductDialog
                                 product={row}
                                 text="Show Details"
@@ -171,7 +171,7 @@ export default function ProductTable() {
                               {userRole === "ROLE_ADMIN" && (
                                 <EditDialog product={row} text="Edit" />
                               )}
-                            </>
+                            </Box>
                           )}
                         </TableCell>
                       ))}
