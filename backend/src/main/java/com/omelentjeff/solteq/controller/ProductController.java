@@ -71,7 +71,7 @@ public class ProductController {
 
     @PatchMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<ProductDTO> updateProductByIdWithImage(@PathVariable Long id,
-                                                                 @RequestPart("product") ProductDTO productDTO,
+                                                                 @RequestPart(value = "product", required = false) ProductDTO productDTO,
                                                                  @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO, file);
         return ResponseEntity.ok(updatedProduct);
