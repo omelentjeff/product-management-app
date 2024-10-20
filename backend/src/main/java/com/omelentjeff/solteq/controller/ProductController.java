@@ -36,7 +36,7 @@ public class ProductController {
         return ResponseEntity.ok(tempProduct);
     }
 
-    @PostMapping(value = "/", consumes = "application/json")
+    @PostMapping(value = "", consumes = "application/json")
     public ResponseEntity<ProductDTO> saveProductWithoutImage(@Valid @RequestBody ProductDTO productDTO) throws IOException {
         ProductDTO savedProduct = productService.save(productDTO, null);
 
@@ -49,8 +49,8 @@ public class ProductController {
     }
 
     // Accept multipart/form-data (with image upload)
-    @PostMapping(value = "/", consumes = {"multipart/form-data"})
-    public ResponseEntity<ProductDTO> saveProductWithImage(@RequestPart("product") ProductDTO productDTO,
+    @PostMapping(value = "", consumes = {"multipart/form-data"})
+    public ResponseEntity<ProductDTO> saveProductWithImage(@RequestPart(value = "product", required = false) ProductDTO productDTO,
                                                            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO savedProduct = productService.save(productDTO, file);
 
