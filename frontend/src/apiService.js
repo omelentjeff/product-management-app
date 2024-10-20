@@ -96,21 +96,42 @@ export const fetchSearchData = async (query) => {
   }
 };
 
-export const updateProduct = async (product) => {
+export const updateProductDetails = async (id, product) => {
+  console.log("Updating product details...");
   const token = authService.getCurrentUser();
   try {
-    const response = await axios.patch(`${baseUrl}/${product.id}`, product, {
+    const response = await axios.patch(`${baseUrl}/${id}`, product, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", // product details content type
       },
     });
     return response;
   } catch (error) {
-    console.error(`Error updating product:`, error);
+    console.error(`Error updating product details:`, error);
     throw (
       error.response?.data ||
-      new Error("An error occurred while updating product.")
+      new Error("An error occurred while updating product details.")
+    );
+  }
+};
+
+export const uploadProductImage = async (id, formData) => {
+  console.log("Uploading product image...");
+  const token = authService.getCurrentUser();
+  try {
+    const response = await axios.patch(`${baseUrl}/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", // image content type
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(`Error uploading product image:`, error);
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while uploading product image.")
     );
   }
 };
