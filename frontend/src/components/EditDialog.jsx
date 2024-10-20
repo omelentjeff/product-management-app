@@ -15,7 +15,7 @@ import {
   Tab,
   TextField,
 } from "@mui/material";
-import { fetchSingleData } from "../apiService";
+import { fetchSingleData, updateProduct } from "../apiService";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -76,6 +76,21 @@ export default function EditDialog({ product, text }) {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await updateProduct(productDetails);
+      console.log("Response:", response);
+
+      if (!response.status === 200) {
+        throw new Error("Failed to update product");
+      }
+
+      handleClose();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
 
   const BACKEND_URL = "http://localhost:8080/";
