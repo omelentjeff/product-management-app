@@ -7,7 +7,6 @@ import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Box, Grid, CircularProgress } from "@mui/material";
 import { fetchSingleData } from "../apiService";
 
@@ -43,6 +42,8 @@ export default function StationDialog({ product, text }) {
     setOpen(false);
     setProductDetails(null);
   };
+
+  const BACKEND_URL = "http://localhost:8080/";
 
   return (
     <React.Fragment>
@@ -93,6 +94,31 @@ export default function StationDialog({ product, text }) {
               >
                 <CloseIcon />
               </IconButton>
+
+              <DialogContent dividers>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1" color="textSecondary">
+                      {productDetails.description}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    {productDetails.photoUrl && (
+                      <img
+                        src={`${BACKEND_URL}${productDetails.photoUrl}`}
+                        alt={productDetails.name}
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          maxHeight: "300px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                        }}
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+              </DialogContent>
             </>
           )
         )}
