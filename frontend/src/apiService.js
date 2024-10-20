@@ -95,3 +95,22 @@ export const fetchSearchData = async (query) => {
     );
   }
 };
+
+export const updateProduct = async (product) => {
+  const token = authService.getCurrentUser();
+  try {
+    const response = await axios.patch(`${baseUrl}/${product.id}`, product, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(`Error updating product:`, error);
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while updating product.")
+    );
+  }
+};
