@@ -180,24 +180,47 @@ export default function EditDialog({ product, text, onUpdate }) {
                     display="flex"
                     justifyContent="center"
                   >
-                    {productDetails.photoUrl &&
-                    productDetails.photoUrl !== "http://example.com" ? (
-                      <img
-                        src={`${BACKEND_URL}${productDetails.photoUrl}`}
-                        alt={productDetails.name}
-                        style={{
-                          width: "70%",
-                          height: "auto",
-                          maxHeight: "300px",
-                          objectFit: "cover",
-                          borderRadius: "8px",
-                        }}
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      {productDetails.photoUrl ? (
+                        <img
+                          src={`${BACKEND_URL}${productDetails.photoUrl}`}
+                          alt={productDetails.name}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            maxHeight: "300px",
+                            objectFit: "cover",
+                            borderRadius: "8px",
+                          }}
+                        />
+                      ) : (
+                        <Typography variant="body1" color="textSecondary">
+                          Image coming soon...
+                        </Typography>
+                      )}
+                      {/* Image Upload Button */}
+                      <input
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="image-upload"
+                        type="file"
+                        onChange={console.log()}
                       />
-                    ) : (
-                      <Typography variant="body1" color="textSecondary">
-                        Image coming soon...
-                      </Typography>
-                    )}
+                      <label htmlFor="image-upload">
+                        <Button
+                          variant="contained"
+                          component="span"
+                          color="primary"
+                          sx={{ mt: 2 }}
+                        >
+                          Select Image
+                        </Button>
+                      </label>
+                    </Box>
                   </Grid>
 
                   <Grid
