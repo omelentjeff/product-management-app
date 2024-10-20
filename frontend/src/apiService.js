@@ -96,6 +96,26 @@ export const fetchSearchData = async (query) => {
   }
 };
 
+export const saveProductDetails = async (product) => {
+  console.log("Saving product details...");
+  const token = authService.getCurrentUser();
+  try {
+    const response = await axios.post(baseUrl, product, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // product details content type
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(`Error saving product details:`, error);
+    throw (
+      error.response?.data ||
+      new Error("An error occurred while saving product details.")
+    );
+  }
+};
+
 export const updateProductDetails = async (id, product) => {
   console.log("Updating product details...");
   const token = authService.getCurrentUser();
