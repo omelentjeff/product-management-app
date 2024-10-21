@@ -18,6 +18,7 @@ import {
 import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import authService from "../authService";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +33,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const checkPasswordMatch = (password1, password2) => {
     return password1 === password2;
@@ -57,11 +59,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await authService.register(
-        username,
-        password,
-        formData.role
-      );
+      const response = await register(username, password, formData.role);
       if (response.token) {
         navigate("/home"); // Redirect to dashboard on success
       }

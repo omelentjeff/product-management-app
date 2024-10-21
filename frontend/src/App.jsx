@@ -5,23 +5,21 @@ import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MyAppBar from "./components/MyAppBar";
 import ProductTable from "./components/ProductTable";
+import { AuthProvider } from "./hooks/AuthProvider";
 
 function App() {
   return (
     <Router>
-      <MyAppBar />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <ProductTable />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <AuthProvider>
+        <MyAppBar />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/home" element={<ProductTable />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }

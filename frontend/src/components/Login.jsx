@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import authService from "../authService";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +23,7 @@ export default function Login() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const { authenticate } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,10 +31,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await authService.authenticate(
-        formData.username,
-        formData.password
-      );
+      const response = await authenticate(formData.username, formData.password);
 
       if (response.token) {
         navigate("/home");
