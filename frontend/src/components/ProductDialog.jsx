@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { Box, Grid, CircularProgress, Tabs, Tab } from "@mui/material";
 import { fetchSingleData } from "../apiService";
+import { useAuth } from "../hooks/AuthProvider";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -38,13 +39,14 @@ export default function StationDialog({ product, text }) {
   const [productDetails, setProductDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
+  const { token } = useAuth();
 
   const handleClickOpen = async () => {
     setOpen(true);
     setIsLoading(true);
 
     try {
-      const details = await fetchSingleData(product.id);
+      const details = await fetchSingleData(token, product.id);
       console.log("Product details fetched:", details);
       setProductDetails(details);
     } catch (error) {

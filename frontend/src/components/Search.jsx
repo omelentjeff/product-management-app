@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { debounce } from "lodash";
 import { fetchSearchData } from "../apiService";
+import { useAuth } from "../hooks/AuthProvider";
 import {
   TextField,
   InputAdornment,
@@ -21,13 +22,14 @@ export default function Search({ setQuery, resetQuery }) {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const { token } = useAuth();
 
   const fetchSuggestions = useMemo(
     () =>
       debounce(async (value) => {
         if (value) {
           try {
-            const result = await fetchSearchData(value);
+            const result = await fetchSearchData(token, value);
             console.log("Suggestions:", result.content);
             setSuggestions(result.content);
             setShowSuggestions(true);

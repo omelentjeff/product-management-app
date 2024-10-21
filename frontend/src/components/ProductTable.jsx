@@ -16,11 +16,10 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Search from "./Search";
 import ProductDialog from "./ProductDialog";
-import authService from "../authService";
-import { jwtDecode } from "jwt-decode";
 import EditDialog from "./EditDialog";
 import DeleteDialog from "./DeleteDialog";
 import AddProductDialog from "./AddProductDialog";
+import { useAuth } from "../hooks/AuthProvider";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -40,23 +39,20 @@ export default function ProductTable() {
     direction: "asc",
   });
   const [query, setQuery] = useState("");
-  const [userRole, setUserRole] = useState("");
+  const { role, token } = useAuth();
 
   useEffect(() => {
-    const token = authService.getCurrentUser();
-    const userRoles = jwtDecode(token);
-    setUserRole(userRoles.role[0].authority);
-
+    console.log("ROLE : ", role);
     const fetchProductData = async () => {
       setIsLoading(true);
       try {
         let data;
         if (query) {
           console.log("Query is present");
-          data = await fetchSearchData(query);
+          data = await fetchSearchData(token, query);
         } else {
           const sortParam = `${sortConfig.key},${sortConfig.direction}`;
-          data = await fetchData(page - 1, 5, sortParam);
+          data = await fetchData(token, page - 1, 5, sortParam);
         }
         setData(data.content);
         setTotalPages(data.totalPages);
@@ -68,7 +64,7 @@ export default function ProductTable() {
     };
 
     fetchProductData();
-  }, [page, sortConfig, query]);
+  }, [token, page, sortConfig, query]);
 
   const handleUpdateProduct = (updatedProduct) => {
     setData((prevData) =>
@@ -124,7 +120,7 @@ export default function ProductTable() {
     <>
       <Box sx={{ mb: 4 }}>
         <Search setQuery={setQuery} resetQuery={resetQuery} />
-        {userRole === "ROLE_ADMIN" && (
+        {role === "ROLE_ADMIN" && (
           <AddProductDialog
             text={"Add new product"}
             onCreate={handleAddProduct}
@@ -195,7 +191,7 @@ export default function ProductTable() {
                                 product={row}
                                 text="Show Details"
                               />
-                              {userRole === "ROLE_ADMIN" && (
+                              {role === "ROLE_ADMIN" && (
                                 <>
                                   <EditDialog
                                     product={row}

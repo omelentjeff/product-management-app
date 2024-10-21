@@ -20,6 +20,7 @@ import {
   updateProductDetails,
   uploadProductImage,
 } from "../apiService";
+import { useAuth } from "../hooks/AuthProvider";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -51,13 +52,14 @@ export default function EditDialog({ product, text, onUpdate }) {
   const [tabIndex, setTabIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [formErrors, setFormErrors] = useState({});
+  const { token } = useAuth();
 
   const handleClickOpen = async () => {
     setOpen(true);
     setIsLoading(true);
 
     try {
-      const details = await fetchSingleData(product.id);
+      const details = await fetchSingleData(token, product.id);
       console.log("Product details fetched:", details);
       setProductDetails(details);
     } catch (error) {
@@ -126,11 +128,15 @@ export default function EditDialog({ product, text, onUpdate }) {
     };
 
     try {
-      const response = await updateProductDetails(product.id, productPayload);
+      const response = await updateProductDetails(
+        token,
+        product.id,
+        productPayload
+      );
       if (selectedImage) {
         const formData = new FormData();
         formData.append("image", productDetails.photoUrl);
-        await uploadProductImage(product.id, formData);
+        await uploadProductImage(token, product.id, formData);
       }
       onUpdate(response.data);
       handleClose();

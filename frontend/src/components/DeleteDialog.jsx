@@ -6,9 +6,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { deleteProduct } from "../apiService";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function DeleteDialog({ product, onDelete }) {
   const [open, setOpen] = useState(false);
+  const { token } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,7 +22,7 @@ export default function DeleteDialog({ product, onDelete }) {
 
   const handleDelete = async () => {
     try {
-      await deleteProduct(product.id);
+      await deleteProduct(token, product.id);
       onDelete(product.id);
       handleClose();
     } catch (error) {

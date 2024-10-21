@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import authService from "../authService";
 import { useAuth } from "../hooks/AuthProvider";
 
 export default function Signup() {

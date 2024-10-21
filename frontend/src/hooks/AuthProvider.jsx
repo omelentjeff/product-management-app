@@ -1,5 +1,5 @@
 // src/hooks/AuthProvider.js
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -13,6 +13,15 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const API_URL = "http://localhost:8080/api/v1/auth";
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      const decodedToken = jwtDecode(storedToken);
+      setUsername(decodedToken.sub);
+      setRole(decodedToken.role[0].authority); // Adjust this line if the structure is different
+    }
+  }, []);
+
   const authenticate = async (username, password) => {
     try {
       const response = await axios.post(`${API_URL}/authenticate`, {
@@ -23,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       if (response.data.token) {
         const decodedToken = jwtDecode(response.data.token);
         setUsername(decodedToken.sub);
-        setRole(decodedToken.role);
+        setRole(decodedToken.role[0].authority);
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         return response.data;

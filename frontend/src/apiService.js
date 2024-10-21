@@ -1,10 +1,13 @@
 import axios from "axios";
-import authService from "./authService";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
-export const fetchData = async (page = 0, pageSize = 10, sort = "ASC") => {
-  const token = authService.getCurrentUser();
+export const fetchData = async (
+  token,
+  page = 0,
+  pageSize = 10,
+  sort = "ASC"
+) => {
   try {
     console.log("Token:", token);
     console.log("API Base URL:", baseUrl);
@@ -51,8 +54,7 @@ export const fetchAllData = async () => {
   return allData;
 };
 
-export const fetchSingleData = async (id) => {
-  const token = authService.getCurrentUser();
+export const fetchSingleData = async (token, id) => {
   try {
     const response = await axios.get(`${baseUrl}/${id}`, {
       headers: {
@@ -70,8 +72,7 @@ export const fetchSingleData = async (id) => {
   }
 };
 
-export const fetchSearchData = async (query) => {
-  const token = authService.getCurrentUser();
+export const fetchSearchData = async (token, query) => {
   console.log("Searching for: ", query);
   try {
     const response = await axios.get(`${baseUrl}/search?name=${query}`, {
@@ -96,8 +97,7 @@ export const fetchSearchData = async (query) => {
   }
 };
 
-export const saveProductDetails = async (formData) => {
-  const token = authService.getCurrentUser();
+export const saveProductDetails = async (token, formData) => {
   try {
     const response = await axios.post(baseUrl, formData, {
       headers: {
@@ -112,9 +112,7 @@ export const saveProductDetails = async (formData) => {
   }
 };
 
-export const updateProductDetails = async (id, product) => {
-  console.log("Updating product details...");
-  const token = authService.getCurrentUser();
+export const updateProductDetails = async (token, id, product) => {
   try {
     const response = await axios.patch(`${baseUrl}/${id}`, product, {
       headers: {
@@ -129,9 +127,7 @@ export const updateProductDetails = async (id, product) => {
   }
 };
 
-export const uploadProductImage = async (id, formData) => {
-  console.log("Uploading product image...");
-  const token = authService.getCurrentUser();
+export const uploadProductImage = async (token, id, formData) => {
   try {
     const response = await axios.patch(`${baseUrl}/${id}`, formData, {
       headers: {
@@ -146,9 +142,7 @@ export const uploadProductImage = async (id, formData) => {
   }
 };
 
-export const deleteProduct = async (id) => {
-  console.log("Deleting product...");
-  const token = authService.getCurrentUser();
+export const deleteProduct = async (token, id) => {
   try {
     const response = await axios.delete(`${baseUrl}/${id}`, {
       headers: {
