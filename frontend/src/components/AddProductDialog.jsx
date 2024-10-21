@@ -15,7 +15,7 @@ import {
   Tab,
   TextField,
 } from "@mui/material";
-import { saveProductDetails, saveProductImage } from "../apiService";
+import { saveProductDetails, uploadProductImage } from "../apiService";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -48,10 +48,12 @@ export default function AddProductDialog({ text }) {
     weight: "",
     nutritionalFact: {},
     photoUrl: null,
+    gtin: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,20 +78,41 @@ export default function AddProductDialog({ text }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
+    // Check if the input belongs to nutritional facts
     if (NUTRITIONAL_FACTS.some((fact) => fact.key === name)) {
       setProductDetails((prev) => ({
         ...prev,
         nutritionalFact: {
           ...prev.nutritionalFact,
-          [name]: value,
+          [name]: value, // Update the specific nutritional fact
         },
       }));
     } else {
       setProductDetails((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: value, // Update other product details
       }));
     }
+
+    // Clear the error for the modified field
+    setFormErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      // For normal fields
+      if (newErrors[name]) {
+        delete newErrors[name];
+      }
+
+      // For nested nutritional facts
+      if (NUTRITIONAL_FACTS.some((fact) => fact.key === name)) {
+        const parent = "nutritionalFact";
+        if (newErrors[parent] && newErrors[parent][name]) {
+          delete newErrors[parent][name];
+        }
+      }
+
+      return newErrors;
+    });
   };
 
   const handleSave = async () => {
@@ -98,27 +121,47 @@ export default function AddProductDialog({ text }) {
       manufacturer: productDetails.manufacturer,
       weight: productDetails.weight,
       nutritionalFact: productDetails.nutritionalFact,
+      gtin: productDetails.gtin,
     };
+    console.log("Product Payload:", productPayload);
+
+    const formData = new FormData();
+    const blob = new Blob([JSON.stringify(productPayload)], {
+      type: "application/json", // make it applicxation/json so multipart/form-data can be used
+    });
+    formData.append("product", blob);
+    if (selectedImage) {
+      formData.append("image", productDetails.photoUrl);
+    }
 
     try {
-      setIsLoading(true);
-      const response = await saveProductDetails(productPayload);
-      console.log("New Product Added Response:", response);
-
-      if (selectedImage) {
-        const formData = new FormData();
-        formData.append("image", productDetails.photoUrl);
-
-        const imageResponse = await saveProductImage(formData);
-        console.log("Image Upload Response:", imageResponse);
-      }
-
-      //onAdd(response.data);
+      const response = await saveProductDetails(formData);
+      console.log("New Product Added Response:", response.data);
       handleClose();
     } catch (error) {
-      console.error("Error adding new product:", error);
-    } finally {
-      setIsLoading(false);
+      if (error.response && error.response.status === 400) {
+        const { details } = error.response.data;
+
+        const validationErrors = {};
+        details.forEach((errorMessage) => {
+          const [field, message] = errorMessage.split(": ");
+
+          // Handle nested fields like nutritionalFact.caloriesPer100g
+          if (field.includes(".")) {
+            console.log("Error in nested");
+            const [parent, child] = field.split(".");
+            if (!validationErrors[parent]) validationErrors[parent] = {};
+            validationErrors[parent][child] = message;
+          } else {
+            validationErrors[field] = message;
+          }
+        });
+
+        // Set form errors to display them in the form
+        setFormErrors(validationErrors);
+      } else {
+        console.error("Error updating product:", error);
+      }
     }
   };
 
@@ -132,8 +175,6 @@ export default function AddProductDialog({ text }) {
       }));
     }
   };
-
-  const BACKEND_URL = "http://localhost:8080/";
 
   return (
     <React.Fragment>
@@ -261,16 +302,20 @@ export default function AddProductDialog({ text }) {
                       <TextField
                         label="Name"
                         name="name"
-                        value={productDetails.name}
+                        value={productDetails.name || ""}
                         onChange={handleInputChange}
+                        error={!!formErrors.name}
+                        helperText={formErrors.name || ""}
                         fullWidth
                         margin="normal"
                       />
                       <TextField
                         label="Manufacturer"
                         name="manufacturer"
-                        value={productDetails.manufacturer}
+                        value={productDetails.manufacturer || ""}
                         onChange={handleInputChange}
+                        error={!!formErrors.manufacturer}
+                        helperText={formErrors.manufacturer || ""}
                         fullWidth
                         margin="normal"
                       />
@@ -278,8 +323,20 @@ export default function AddProductDialog({ text }) {
                         label="Weight (g)"
                         name="weight"
                         type="number"
-                        value={productDetails.weight}
+                        value={productDetails.weight || ""}
                         onChange={handleInputChange}
+                        error={!!formErrors.weight}
+                        helperText={formErrors.weight || ""}
+                        fullWidth
+                        margin="normal"
+                      />
+                      <TextField
+                        label="Gtin-code"
+                        name="gtin"
+                        value={productDetails.gtin || ""}
+                        onChange={handleInputChange}
+                        error={!!formErrors.gtin}
+                        helperText={formErrors.gtin || ""}
                         fullWidth
                         margin="normal"
                       />
