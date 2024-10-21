@@ -20,6 +20,7 @@ import authService from "../authService";
 import { jwtDecode } from "jwt-decode";
 import EditDialog from "./EditDialog";
 import DeleteDialog from "./DeleteDialog";
+import AddProductDialog from "./AddProductDialog";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -120,14 +121,7 @@ export default function ProductTable() {
       <Box sx={{ mb: 4 }}>
         <Search setQuery={setQuery} resetQuery={resetQuery} />
         {userRole === "ROLE_ADMIN" && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={console.log()}
-            sx={{ mt: 2 }}
-          >
-            Add New Product
-          </Button>
+          <AddProductDialog text={"Add new product"} />
         )}
       </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
