@@ -38,7 +38,7 @@ public class ProductController {
 
     // Accept multipart/form-data (with image upload)
     @PostMapping(value = "", consumes = {"application/json", "multipart/form-data"})
-    public ResponseEntity<ProductDTO> save(@RequestPart(value = "product", required = false) ProductDTO productDTO,
+    public ResponseEntity<ProductDTO> save(@Valid @RequestPart(value = "product", required = false) ProductDTO productDTO,
                                                            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO savedProduct = productService.save(productDTO, file);
 
@@ -59,7 +59,7 @@ public class ProductController {
 
     @PatchMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<ProductDTO> updateProductByIdWithImage(@PathVariable Long id,
-                                                                 @RequestPart(value = "product", required = false) ProductDTO productDTO,
+                                                                 @Valid @RequestPart(value = "product", required = false) ProductDTO productDTO,
                                                                  @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO, file);
         return ResponseEntity.ok(updatedProduct);
