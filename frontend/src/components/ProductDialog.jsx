@@ -144,10 +144,10 @@ export default function StationDialog({ product, text }) {
                         src={`${BACKEND_URL}${productDetails.photoUrl}`}
                         alt={productDetails.name}
                         style={{
-                          width: "70%",
+                          width: "100%",
                           height: "auto",
                           maxHeight: "300px",
-                          objectFit: "cover",
+                          objectFit: "contain",
                           borderRadius: "8px",
                           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                         }}
@@ -170,6 +170,18 @@ export default function StationDialog({ product, text }) {
                               color="textSecondary"
                               sx={{ fontWeight: "bold" }}
                             >
+                              Name:
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary">
+                              {productDetails.name}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Typography
+                              variant="body1"
+                              color="textSecondary"
+                              sx={{ fontWeight: "bold" }}
+                            >
                               Manufacturer:
                             </Typography>
                             <Typography variant="body1" color="textSecondary">
@@ -186,6 +198,18 @@ export default function StationDialog({ product, text }) {
                             </Typography>
                             <Typography variant="body1" color="textSecondary">
                               {productDetails.weight}g
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Typography
+                              variant="body1"
+                              color="textSecondary"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              GTIN:
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary">
+                              {productDetails.gtin}
                             </Typography>
                           </Grid>
                         </Grid>
