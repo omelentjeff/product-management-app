@@ -19,6 +19,7 @@ import ProductDialog from "./ProductDialog";
 import authService from "../authService";
 import { jwtDecode } from "jwt-decode";
 import EditDialog from "./EditDialog";
+import DeleteDialog from "./DeleteDialog";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -187,11 +188,14 @@ export default function ProductTable() {
                                 text="Show Details"
                               />
                               {userRole === "ROLE_ADMIN" && (
-                                <EditDialog
-                                  product={row}
-                                  text="Edit"
-                                  onUpdate={handleUpdateProduct}
-                                />
+                                <>
+                                  <EditDialog
+                                    product={row}
+                                    text="Edit"
+                                    onUpdate={handleUpdateProduct}
+                                  />
+                                  <DeleteDialog product={row} />
+                                </>
                               )}
                             </Box>
                           )}
