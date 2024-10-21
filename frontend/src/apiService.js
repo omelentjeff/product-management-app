@@ -96,43 +96,19 @@ export const fetchSearchData = async (query) => {
   }
 };
 
-export const saveProductDetails = async (product) => {
-  console.log("Saving product details...");
-  const token = authService.getCurrentUser();
-  try {
-    const response = await axios.post(baseUrl, product, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // product details content type
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error(`Error saving product details:`, error);
-    throw (
-      error.response?.data ||
-      new Error("An error occurred while saving product details.")
-    );
-  }
-};
-
-export const saveProductImage = async (formData) => {
-  console.log("Saving product image...");
+export const saveProductDetails = async (formData) => {
   const token = authService.getCurrentUser();
   try {
     const response = await axios.post(baseUrl, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data", // image content type
+        "Content-Type": "multipart/form-data",
       },
     });
     return response;
   } catch (error) {
-    console.error(`Error saving product image:`, error);
-    throw (
-      error.response?.data ||
-      new Error("An error occurred while saving product image.")
-    );
+    console.error("Error saving product details:", error);
+    throw error;
   }
 };
 
