@@ -85,6 +85,10 @@ export default function ProductTable() {
     );
   };
 
+  const handleAddProduct = (newProduct) => {
+    setData((prevData) => [newProduct, ...prevData]); // Add new product to the beginning
+  };
+
   const resetQuery = () => {
     setQuery("");
     setPage(1);
@@ -121,7 +125,10 @@ export default function ProductTable() {
       <Box sx={{ mb: 4 }}>
         <Search setQuery={setQuery} resetQuery={resetQuery} />
         {userRole === "ROLE_ADMIN" && (
-          <AddProductDialog text={"Add new product"} />
+          <AddProductDialog
+            text={"Add new product"}
+            onCreate={handleAddProduct}
+          />
         )}
       </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
