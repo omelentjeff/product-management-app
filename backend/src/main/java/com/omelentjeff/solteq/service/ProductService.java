@@ -113,4 +113,11 @@ public class ProductService {
         // Return relative URL for the frontend
         return "uploads/images/" + fileName; // Correct path to match resource handler
     }
+
+    @Transactional
+    public void deleteProductById(long theId) {
+        Product product = productRepository.findById(theId)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + theId + " not found"));
+        productRepository.delete(product);
+    }
 }
