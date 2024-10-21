@@ -149,10 +149,7 @@ export const updateProductDetails = async (id, product) => {
     return response;
   } catch (error) {
     console.error(`Error updating product details:`, error);
-    throw (
-      error.response?.data ||
-      new Error("An error occurred while updating product details.")
-    );
+    throw error;
   }
 };
 
@@ -169,9 +166,6 @@ export const uploadProductImage = async (id, formData) => {
     return response;
   } catch (error) {
     console.error(`Error uploading product image:`, error);
-    throw (
-      error.response?.data ||
-      new Error("An error occurred while uploading product image.")
-    );
+    throw error;
   }
 };
