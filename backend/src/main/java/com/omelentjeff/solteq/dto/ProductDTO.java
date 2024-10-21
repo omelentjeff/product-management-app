@@ -1,5 +1,6 @@
 package com.omelentjeff.solteq.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,9 @@ public class ProductDTO {
     private String name;
     @NotNull(message = "Field can't be empty")
     private BigDecimal weight;
+    @Valid
     private NutritionalFactDTO nutritionalFact;
     private String photoUrl;
-    //@NotBlank(message = "Field can't be empty")
+    @NotBlank(message = "Field can't be empty")
     private String gtin;
 }
