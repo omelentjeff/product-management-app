@@ -169,3 +169,20 @@ export const uploadProductImage = async (id, formData) => {
     throw error;
   }
 };
+
+export const deleteProduct = async (id) => {
+  console.log("Deleting product...");
+  const token = authService.getCurrentUser();
+  try {
+    const response = await axios.delete(`${baseUrl}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(`Error deleting product:`, error);
+    throw error;
+  }
+};
