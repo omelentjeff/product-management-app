@@ -355,6 +355,10 @@ export default function AddProductDialog({ text }) {
                               productDetails.nutritionalFact[fact.key] || ""
                             }
                             onChange={handleInputChange}
+                            error={!!formErrors.nutritionalFact?.[fact.key]}
+                            helperText={
+                              formErrors.nutritionalFact?.[fact.key] || ""
+                            }
                             margin="normal"
                             fullWidth
                           />
