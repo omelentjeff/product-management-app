@@ -126,43 +126,49 @@ export default function EditDialog({ product, text, onUpdate }) {
     };
 
     try {
-      // send product details as JSON
       const response = await updateProductDetails(product.id, productPayload);
-      console.log("Product Details Response:", response);
-
-      // if image was selected, upload it
       if (selectedImage) {
         const formData = new FormData();
         formData.append("image", productDetails.photoUrl);
-
-        const imageResponse = await uploadProductImage(product.id, formData);
-        console.log("Image Upload Response:", imageResponse);
+        await uploadProductImage(product.id, formData);
       }
-
-      // After both updates, call onUpdate and close the dialog
       onUpdate(response.data);
       handleClose();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         const { details } = error.response.data;
-
         const validationErrors = {};
+        let hasProductDetailsErrors = false;
+        let hasNutritionalFactsErrors = false;
+
+        // Organize errors into product details and nutritional facts
         details.forEach((errorMessage) => {
           const [field, message] = errorMessage.split(": ");
-
-          // Handle nested fields like nutritionalFact.caloriesPer100g
           if (field.includes(".")) {
-            console.log("Error in nested");
             const [parent, child] = field.split(".");
             if (!validationErrors[parent]) validationErrors[parent] = {};
             validationErrors[parent][child] = message;
+
+            // Check if the error is related to nutritional facts
+            if (parent === "nutritionalFact") hasNutritionalFactsErrors = true;
           } else {
             validationErrors[field] = message;
+
+            // Errors in product details (Tab 1)
+            hasProductDetailsErrors = true;
           }
         });
 
-        // Set form errors to display them in the form
+        // Set form errors for displaying in the form
         setFormErrors(validationErrors);
+
+        // If there are errors in product details (Tab 1), stay on or switch to Tab 1
+        if (hasProductDetailsErrors) {
+          setTabIndex(0); // Show Tab 1 (Product Details)
+        } else if (hasNutritionalFactsErrors) {
+          // If no errors in Product Details but errors exist in Nutritional Facts, switch to Tab 2
+          setTabIndex(1);
+        }
       } else {
         console.error("Error updating product:", error);
       }
