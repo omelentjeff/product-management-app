@@ -56,7 +56,7 @@ export default function ProductTable() {
           data = await fetchSearchData(query);
         } else {
           const sortParam = `${sortConfig.key},${sortConfig.direction}`;
-          data = await fetchData(page - 1, 10, sortParam);
+          data = await fetchData(page - 1, 5, sortParam);
         }
         setData(data.content);
         setTotalPages(data.totalPages);

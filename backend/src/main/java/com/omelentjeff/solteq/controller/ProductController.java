@@ -26,7 +26,7 @@ public class ProductController {
 
     @GetMapping({"/", ""})
     public ResponseEntity<Page<ProductDTO>> getAllProducts(
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<ProductDTO> products = productService.getAllProducts(pageable);
         return ResponseEntity.ok(products);
     }
