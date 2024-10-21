@@ -50,6 +50,7 @@ export default function EditDialog({ product, text, onUpdate }) {
   const [isLoading, setIsLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
   const handleClickOpen = async () => {
     setOpen(true);
@@ -121,7 +122,22 @@ export default function EditDialog({ product, text, onUpdate }) {
       onUpdate(response.data);
       handleClose();
     } catch (error) {
-      console.error("Error updating product:", error);
+      if (error.response && error.response.status === 400) {
+        console.log("Starting extracting validation errors...");
+        const { details } = error.response.data;
+        // Extract validation errors from the 'details' array
+        const validationErrors = {};
+        details.forEach((errorMessage) => {
+          const [field, message] = errorMessage.split(": ");
+          validationErrors[field] = message;
+        });
+        console.log("Validation Errors:", validationErrors);
+
+        // Set form errors to display in the form
+        setFormErrors(validationErrors);
+      } else {
+        console.error("Error updating product:", error);
+      }
     }
   };
 
@@ -271,6 +287,8 @@ export default function EditDialog({ product, text, onUpdate }) {
                           name="name"
                           value={productDetails.name || ""}
                           onChange={handleInputChange}
+                          error={!!formErrors.name}
+                          helperText={formErrors.name || ""}
                           fullWidth
                           margin="normal"
                         />
@@ -279,6 +297,8 @@ export default function EditDialog({ product, text, onUpdate }) {
                           name="manufacturer"
                           value={productDetails.manufacturer || ""}
                           onChange={handleInputChange}
+                          error={!!formErrors.manufacturer}
+                          helperText={formErrors.manufacturer || ""}
                           fullWidth
                           margin="normal"
                         />
@@ -288,6 +308,8 @@ export default function EditDialog({ product, text, onUpdate }) {
                           type="number"
                           value={productDetails.weight || ""}
                           onChange={handleInputChange}
+                          error={!!formErrors.weight}
+                          helperText={formErrors.weight || ""}
                           fullWidth
                           margin="normal"
                         />
