@@ -4,13 +4,15 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { Typography, Button } from "@mui/material";
-import authService from "../authService";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function MyAppBar() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { token } = useAuth();
 
   const handleLogout = () => {
-    authService.logout();
+    logout();
     navigate("/login");
   };
 
@@ -25,9 +27,11 @@ export default function MyAppBar() {
           >
             Product API
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+          {token && (
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
