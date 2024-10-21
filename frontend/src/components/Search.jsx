@@ -78,7 +78,7 @@ export default function Search({ setQuery, resetQuery }) {
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Enter a station name"
+              placeholder="Enter a product name"
               value={input}
               onChange={handleInputChange}
               InputProps={{
