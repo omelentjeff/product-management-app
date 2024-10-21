@@ -94,6 +94,26 @@ export default function EditDialog({ product, text, onUpdate }) {
         [name]: value, // Update other product details
       }));
     }
+
+    // Clear the error for the modified field
+    setFormErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      // For normal fields
+      if (newErrors[name]) {
+        delete newErrors[name];
+      }
+
+      // For nested nutritional facts
+      if (NUTRITIONAL_FACTS.some((fact) => fact.key === name)) {
+        const parent = "nutritionalFact";
+        if (newErrors[parent] && newErrors[parent][name]) {
+          delete newErrors[parent][name];
+        }
+      }
+
+      return newErrors;
+    });
   };
 
   const handleSave = async () => {
@@ -102,6 +122,7 @@ export default function EditDialog({ product, text, onUpdate }) {
       manufacturer: productDetails.manufacturer,
       weight: productDetails.weight,
       nutritionalFact: productDetails.nutritionalFact,
+      gtin: productDetails.gtin,
     };
 
     try {
@@ -123,17 +144,24 @@ export default function EditDialog({ product, text, onUpdate }) {
       handleClose();
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.log("Starting extracting validation errors...");
         const { details } = error.response.data;
-        // Extract validation errors from the 'details' array
+
         const validationErrors = {};
         details.forEach((errorMessage) => {
           const [field, message] = errorMessage.split(": ");
-          validationErrors[field] = message;
-        });
-        console.log("Validation Errors:", validationErrors);
 
-        // Set form errors to display in the form
+          // Handle nested fields like nutritionalFact.caloriesPer100g
+          if (field.includes(".")) {
+            console.log("Error in nested");
+            const [parent, child] = field.split(".");
+            if (!validationErrors[parent]) validationErrors[parent] = {};
+            validationErrors[parent][child] = message;
+          } else {
+            validationErrors[field] = message;
+          }
+        });
+
+        // Set form errors to display them in the form
         setFormErrors(validationErrors);
       } else {
         console.error("Error updating product:", error);
@@ -313,6 +341,16 @@ export default function EditDialog({ product, text, onUpdate }) {
                           fullWidth
                           margin="normal"
                         />
+                        <TextField
+                          label="Gtin-code"
+                          name="gtin"
+                          value={productDetails.gtin || ""}
+                          onChange={handleInputChange}
+                          error={!!formErrors.gtin}
+                          helperText={formErrors.gtin || ""}
+                          fullWidth
+                          margin="normal"
+                        />
                       </Box>
                     )}
                     {tabIndex === 1 && (
@@ -322,6 +360,9 @@ export default function EditDialog({ product, text, onUpdate }) {
                             NUTRITIONAL_FACTS.map((fact) => {
                               const value =
                                 productDetails.nutritionalFact[fact.key];
+                              const error =
+                                formErrors.nutritionalFact?.[fact.key];
+                              const helperText = error ? error : "";
                               return (
                                 <TextField
                                   key={fact.key}
@@ -330,6 +371,8 @@ export default function EditDialog({ product, text, onUpdate }) {
                                   type="number"
                                   value={value || ""}
                                   onChange={handleInputChange}
+                                  error={!!error} // Dynamically set the error prop
+                                  helperText={helperText} // Dynamically set the helper text
                                   margin="normal"
                                   fullWidth
                                 />
