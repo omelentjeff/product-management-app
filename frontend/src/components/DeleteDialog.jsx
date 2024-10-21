@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { deleteProduct } from "../apiService";
 
-export default function DeleteDialog({ product }) {
+export default function DeleteDialog({ product, onDelete }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -20,7 +20,8 @@ export default function DeleteDialog({ product }) {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteProduct(product.id);
+      await deleteProduct(product.id);
+      onDelete(product.id);
       handleClose();
     } catch (error) {
       console.error(`Error deleting product:`, error);
