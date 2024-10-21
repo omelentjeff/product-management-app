@@ -35,12 +35,12 @@ const NUTRITIONAL_FACTS = [
   { label: "Polyols", key: "polyols", unit: "g" },
   { label: "Fibers", key: "fibers", unit: "g" },
   { label: "Protein", key: "protein", unit: "g" },
-  { label: "Sodium", key: "sodium", unit: "mg" },
+  { label: "Sodium", key: "sodium", unit: "g" },
   { label: "Vitamin C", key: "vitaminC", unit: "mg" },
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
-export default function AddProductDialog({ text }) {
+export default function AddProductDialog({ text, onCreate }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState({
     name: "",
@@ -137,6 +137,7 @@ export default function AddProductDialog({ text }) {
     try {
       const response = await saveProductDetails(formData);
       console.log("New Product Added Response:", response.data);
+      onCreate(response.data);
       handleClose();
     } catch (error) {
       if (error.response && error.response.status === 400) {
