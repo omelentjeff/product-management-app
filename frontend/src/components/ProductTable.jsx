@@ -77,6 +77,13 @@ export default function ProductTable() {
     );
   };
 
+  // Callback to handle product deletion
+  const handleDeleteProduct = (productId) => {
+    setData((prevData) =>
+      prevData.filter((product) => product.id !== productId)
+    );
+  };
+
   const resetQuery = () => {
     setQuery("");
     setPage(1);
@@ -194,7 +201,10 @@ export default function ProductTable() {
                                     text="Edit"
                                     onUpdate={handleUpdateProduct}
                                   />
-                                  <DeleteDialog product={row} />
+                                  <DeleteDialog
+                                    product={row}
+                                    onDelete={handleDeleteProduct}
+                                  />
                                 </>
                               )}
                             </Box>
