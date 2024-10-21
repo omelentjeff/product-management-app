@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       if (response.data.token) {
         const decodedToken = jwtDecode(response.data.token);
         setUsername(decodedToken.sub);
-        setRole(decodedToken.role);
+        setRole(decodedToken.role[0].authority);
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         return response.data;
