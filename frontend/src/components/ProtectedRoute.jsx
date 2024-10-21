@@ -1,17 +1,11 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import authService from "../authService";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/AuthProvider";
 
-export default function ProtectedRoute({ children }) {
-  const isAuthenticated = authService.getCurrentUser();
+const ProtectedRoute = () => {
+  const user = useAuth();
+  if (!user.token) return <Navigate to="/login" />;
+  return <Outlet />;
+};
 
-  console.log("isAuthenticated", isAuthenticated);
-
-  if (!isAuthenticated) {
-    // if user isn't authenticated, redirect the user to login page
-    return <Navigate to="/login" />;
-  }
-
-  // if user is authenticated, redirect the user to the protected page
-  return children;
-}
+export default ProtectedRoute;
