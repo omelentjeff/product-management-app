@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `nutritional_fact` (
     `fibers` DECIMAL(10, 2),
     `protein` DECIMAL(10, 2),
     `sodium` DECIMAL(10, 2),
-    `vitamin_c` DECIMAL(10, 2),
+    `vitaminc` DECIMAL(10, 2),
     `calcium` DECIMAL(10, 2)
 );
 

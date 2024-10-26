@@ -31,6 +31,6 @@ public class NutritionalFact {
     private BigDecimal fibers;
     private BigDecimal protein;
     private BigDecimal sodium;
-    private BigDecimal vitamin_c;
+    private BigDecimal vitaminC;
     private BigDecimal calcium;
 }
