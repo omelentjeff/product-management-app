@@ -252,7 +252,7 @@ export default function AddProductDialog({ text, onCreate }) {
               centered
             >
               <Tab label="Product Details" />
-              <Tab label="Nutritional Facts" />
+              <Tab label="Nutritional Facts / 100g" />
             </Tabs>
 
             <DialogContent dividers>

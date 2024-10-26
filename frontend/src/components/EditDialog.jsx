@@ -254,7 +254,7 @@ export default function EditDialog({ product, text, onUpdate }) {
                 centered
               >
                 <Tab label="Product Details" />
-                <Tab label="Nutritional Facts" />
+                <Tab label="Nutritional Facts / 100g" />
               </Tabs>
 
               <DialogContent dividers>
@@ -367,9 +367,6 @@ export default function EditDialog({ product, text, onUpdate }) {
                     )}
                     {tabIndex === 1 && (
                       <Box textAlign="center">
-                        <Typography variant="body1" color="textSecondary">
-                          Per 100g
-                        </Typography>
                         <Box sx={{ textAlign: "left", margin: 0, padding: 0 }}>
                           {productDetails.nutritionalFact ? (
                             NUTRITIONAL_FACTS.map((fact) => {
