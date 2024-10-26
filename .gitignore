@@ -37,5 +37,5 @@ frontend/.env
 /frontend/node_modules
 
 # image directory
-/backend/src/main/resources/static/uploads/images/
+/uploads/
 
