@@ -30,7 +30,7 @@ const NUTRITIONAL_FACTS = [
   { label: "Fibers", key: "fibers", unit: "g" },
   { label: "Protein", key: "protein", unit: "g" },
   { label: "Sodium", key: "sodium", unit: "g" },
-  { label: "Vitamin C", key: "vitaminC", unit: "mg" },
+  { label: "Vitamin C", key: "vitamin_c", unit: "mg" },
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
@@ -228,11 +228,9 @@ export default function StationDialog({ product, text }) {
                               if (fact.key === "energy") {
                                 // Combine kcal and kJ for the Energy field
                                 const energyKcal =
-                                  productDetails.nutritionalFact
-                                    .caloriesPer100g;
+                                  productDetails.nutritionalFact.calories;
                                 const energyKj =
-                                  productDetails.nutritionalFact
-                                    .kilojoulesPer100g;
+                                  productDetails.nutritionalFact.kilojoules;
 
                                 if (energyKcal !== null && energyKj !== null) {
                                   return (

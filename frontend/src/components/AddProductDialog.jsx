@@ -28,8 +28,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const NUTRITIONAL_FACTS = [
-  { label: "Calories per 100g", key: "caloriesPer100g", unit: "kcal" },
-  { label: "Kilojoules per 100g", key: "kilojoulesPer100g", unit: "kJ" },
+  { label: "Calories", key: "calories", unit: "kcal" },
+  { label: "Kilojoules", key: "kilojoules", unit: "kJ" },
   { label: "Fat", key: "fat", unit: "g" },
   { label: "Carbohydrates", key: "carbohydrates", unit: "g" },
   { label: "Sugars", key: "sugars", unit: "g" },

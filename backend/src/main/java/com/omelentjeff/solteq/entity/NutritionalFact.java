@@ -22,8 +22,8 @@ public class NutritionalFact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer caloriesPer100g;
-    private Integer kilojoulesPer100g;
+    private Integer calories;
+    private Integer kilojoules;
     private BigDecimal fat;
     private BigDecimal carbohydrates;
     private BigDecimal sugars;
@@ -31,6 +31,6 @@ public class NutritionalFact {
     private BigDecimal fibers;
     private BigDecimal protein;
     private BigDecimal sodium;
-    private BigDecimal vitaminC;
+    private BigDecimal vitamin_c;
     private BigDecimal calcium;
 }

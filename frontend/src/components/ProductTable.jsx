@@ -42,7 +42,7 @@ export default function ProductTable() {
   const { role, token } = useAuth();
 
   useEffect(() => {
-    console.log("ROLE : ", role);
+    //console.log("ROLE : ", role);
     const fetchProductData = async () => {
       setIsLoading(true);
       try {

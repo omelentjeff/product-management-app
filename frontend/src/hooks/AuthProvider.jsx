@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
-  const API_URL = "http://localhost:8080/api/v1/auth";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -19,12 +19,13 @@ export const AuthProvider = ({ children }) => {
       const decodedToken = jwtDecode(storedToken);
       setUsername(decodedToken.sub);
       setRole(decodedToken.role[0].authority); // Adjust this line if the structure is different
+      console.log("Role:", decodedToken.role[0].authority);
     }
   }, []);
 
   const authenticate = async (username, password) => {
     try {
-      const response = await axios.post(`${API_URL}/authenticate`, {
+      const response = await axios.post(`${API_URL}/auth/authenticate`, {
         username,
         password,
       });
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, password, role) => {
     try {
-      const response = await axios.post(`${API_URL}/register`, {
+      const response = await axios.post(`${API_URL}/auth/register`, {
         username,
         password,
         role,

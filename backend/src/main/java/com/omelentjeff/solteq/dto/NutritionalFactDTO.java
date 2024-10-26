@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 public class NutritionalFactDTO {
 
     @NotNull(message = "Field can't be empty")
-    private Integer caloriesPer100g;
+    private Integer calories;
     @NotNull(message = "Field can't be empty")
-    private Integer kilojoulesPer100g;
+    private Integer kilojoules;
     private BigDecimal fat;
     private BigDecimal carbohydrates;
     private BigDecimal sugars;
@@ -25,6 +25,6 @@ public class NutritionalFactDTO {
     private BigDecimal fibers;
     private BigDecimal protein;
     private BigDecimal sodium;
-    private BigDecimal vitaminC;
+    private BigDecimal vitamin_c;
     private BigDecimal calcium;
 }

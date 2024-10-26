@@ -28,7 +28,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private static final String IMAGE_DIR = "src/main/resources/static/uploads/images/";
+    private static final String IMAGE_DIR = "/uploads/images/"; // Use an absolute path
+
 
     @Cacheable(value = "products", key = "'page:' + #pageable.pageNumber + ',size:' + #pageable.pageSize + ',sort:' + #pageable.sort.toString()")
     public Page<ProductDTO> getAllProducts(Pageable pageable) {

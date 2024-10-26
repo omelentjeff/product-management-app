@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = import.meta.env.VITE_API_URL;
+const baseUrl = `${import.meta.env.VITE_API_URL}/products`;
 
 export const fetchData = async (
   token,
@@ -98,6 +98,7 @@ export const fetchSearchData = async (token, query) => {
 };
 
 export const saveProductDetails = async (token, formData) => {
+  console.log("SAVE TOKEN: " + token);
   try {
     const response = await axios.post(baseUrl, formData, {
       headers: {
