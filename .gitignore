@@ -1,89 +1,3 @@
-# Java / Maven / Spring Boot
-
-# Compiled source code and class files
-/target/
-/out/
-/backend/target/
-/backend/build/
-
-# Logs
-*.log
-logs/
-
-# Eclipse specific files
-/.settings/
-/.project
-.classpath
-
-# IntelliJ specific files
-.idea/
-*.iml
-*.iws
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Maven specific
-/pom.xml.tag
-/pom.xml.releaseBackup
-/pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-.mvn/timing.properties
-
-# Generated at runtime
-hs_err_pid*
-!src/main/**/application*.yml  # Keep application YAMLs, if present in config
-!.mvn/wrapper/maven-wrapper.jar
-
-# Spring Boot devtools restart directory
-.spring-boot-devtools
-
-# Node / React
-
-# Dependencies
-/node_modules/
-/frontend/node_modules/
-/jspm_packages/
-
-# Build output
-/dist/
-/build/
-
-# Temporary files
-*.tmp
-*.swp
-*.swo
-
-# Generated files
-yarn-debug.log*
-yarn-error.log*
-npm-debug.log*
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Environment variables
-.env
-
-# IDE specific files (Webstorm/IntelliJ)
-.idea/
-*.iml
-*.iws
-
-# VSCode specific
-.vscode/
-
-# React Native, Expo files
-.expo/
-.expo-shared/
-
-# image directory
-/backend/src/main/resources/static/uploads/images/
-
 # Compiled class file
 *.class
 
@@ -121,3 +35,7 @@ frontend/.env
 .idea/
 
 /frontend/node_modules
+
+# image directory
+/backend/src/main/resources/static/uploads/images/
+
