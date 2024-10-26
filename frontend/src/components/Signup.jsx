@@ -57,6 +57,13 @@ export default function Signup() {
       return;
     }
 
+    // Check password length
+    if (password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await register(username, password, formData.role);
       if (response.token) {
