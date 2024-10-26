@@ -72,6 +72,7 @@ export default function EditDialog({ product, text, onUpdate }) {
   const handleClose = () => {
     setOpen(false);
     setProductDetails(null);
+    setTabIndex(0);
   };
 
   const handleTabChange = (event, newValue) => {

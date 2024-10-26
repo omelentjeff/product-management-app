@@ -59,6 +59,7 @@ export default function StationDialog({ product, text }) {
   const handleClose = () => {
     setOpen(false);
     setProductDetails(null);
+    setTabIndex(0);
   };
 
   const handleTabChange = (event, newValue) => {

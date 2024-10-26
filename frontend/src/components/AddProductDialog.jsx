@@ -71,6 +71,7 @@ export default function AddProductDialog({ text, onCreate }) {
       photoUrl: null,
     });
     setSelectedImage(null);
+    setTabIndex(0);
   };
 
   const handleTabChange = (event, newValue) => {
