@@ -30,7 +30,7 @@ const NUTRITIONAL_FACTS = [
   { label: "Fibers", key: "fibers", unit: "g" },
   { label: "Protein", key: "protein", unit: "g" },
   { label: "Sodium", key: "sodium", unit: "g" },
-  { label: "Vitamin C", key: "vitamin_c", unit: "mg" },
+  { label: "Vitamin C", key: "vitaminC", unit: "mg" },
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
