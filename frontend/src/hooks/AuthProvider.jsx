@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
     setToken("");
     localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (

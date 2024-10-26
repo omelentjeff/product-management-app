@@ -13,7 +13,6 @@ export default function MyAppBar() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
   };
 
   return (
