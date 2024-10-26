@@ -27,6 +27,13 @@ replay_pid*
 backend/.env
 frontend/.env
 
+# Ignore Maven/Gradle build artifacts
+/backend/target/
+
+# Ignore frontend build artifacts
+/frontend/dist/
+
+
 # Ignore Docker environment files
 .env
 
