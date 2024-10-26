@@ -30,7 +30,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=product_admin
       - SPRING_DATASOURCE_PASSWORD=productPW1!
     volumes:
-      - ./uploads:/uploads
+      - ./uploads/images:/uploads/images
 
   frontend:
     build:
