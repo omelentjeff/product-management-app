@@ -44,6 +44,4 @@ frontend/.env
 /frontend/node_modules
 
 # image directory
-/uploads/
-
 /backend/src/main/resources/static/
