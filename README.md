@@ -21,6 +21,8 @@ docker-compose up --build -d
 ```
 
 5. Once it's done, navigate to 'http://localhost:3000' on your browser.
+
+6. First, you will need to create a new user, it can be either Admin or User
   
 7. When you want to stop, run:
 
