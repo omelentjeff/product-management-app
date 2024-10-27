@@ -22,6 +22,12 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing products.
+ *
+ * This class provides methods to create, read, update, delete, and search for products.
+ * It also handles image uploads and caching of product data.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -31,6 +37,12 @@ public class ProductService {
     //private static final String IMAGE_DIR = "src/main/resources/static/uploads/images/"; // for development
     private static final String IMAGE_DIR = "/uploads/images/"; //this is for docker
 
+    /**
+     * Retrieves a paginated list of all products.
+     *
+     * @param pageable pagination information
+     * @return a Page of ProductDTOs containing the products
+     */
     @Cacheable(value = "products", key = "'page:' + #pageable.pageNumber + ',size:' + #pageable.pageSize + ',sort:' + #pageable.sort.toString()")
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
@@ -41,11 +53,26 @@ public class ProductService {
         return new PageImpl<>(productDTOS, pageable, productPage.getTotalElements());
     }
 
+    /**
+     * Retrieves a product by its ID.
+     *
+     * @param id the ID of the product to retrieve
+     * @return the ProductDTO corresponding to the specified ID
+     * @throws ProductNotFoundException if no product with the given ID is found
+     */
     public ProductDTO getProductById(Long id) {
         Product tempProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " not found"));
         return productMapper.toDTO(tempProduct);
     }
 
+    /**
+     * Saves a new product or updates an existing product.
+     *
+     * @param productDTO the product data to save
+     * @param file the image file associated with the product, if any
+     * @return the saved ProductDTO
+     * @throws IOException if there is an error saving the image
+     */
     @Transactional
     public ProductDTO save(ProductDTO productDTO, MultipartFile file) throws IOException {
 
@@ -66,6 +93,16 @@ public class ProductService {
         return productMapper.toDTO(savedProduct);
     }
 
+    /**
+     * Updates an existing product.
+     *
+     * @param id the ID of the product to update
+     * @param productDTO the new product data
+     * @param file the new image file associated with the product, if any
+     * @return the updated ProductDTO
+     * @throws IOException if there is an error saving the image
+     * @throws ProductNotFoundException if no product with the given ID is found
+     */
     @Transactional
     public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile file) throws IOException {
         Product existingProduct = productRepository.findById(id)
@@ -83,6 +120,13 @@ public class ProductService {
         return productMapper.toDTO(existingProduct);
     }
 
+    /**
+     * Searches for products by name or GTIN.
+     *
+     * @param query the search query
+     * @param pageable pagination information
+     * @return a Page of ProductDTOs containing the search results
+     */
     public Page<ProductDTO> searchProducts(String query, Pageable pageable) {
         Page<Product> productPage;
 
@@ -99,6 +143,13 @@ public class ProductService {
         return new PageImpl<>(productDTOS, pageable, productPage.getTotalElements());
     }
 
+    /**
+     * Saves an uploaded image to the specified directory.
+     *
+     * @param file the image file to save
+     * @return the relative URL of the saved image
+     * @throws IOException if there is an error saving the image
+     */
     public String saveImage(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return null;
@@ -121,6 +172,12 @@ public class ProductService {
         return "uploads/images/" + fileName; // Correct path to match resource handler
     }
 
+    /**
+     * Deletes a product by its ID.
+     *
+     * @param theId the ID of the product to delete
+     * @throws ProductNotFoundException if no product with the given ID is found
+     */
     @Transactional
     public void deleteProductById(long theId) {
         Product product = productRepository.findById(theId)

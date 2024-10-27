@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * Entity class representing the nutritional facts of a product.
+ * This class is mapped to a database table and contains fields
+ * that describe various nutritional components.
+ */
 @Data
 @Builder
 @NoArgsConstructor

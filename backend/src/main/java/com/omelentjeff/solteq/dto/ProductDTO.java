@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * Data Transfer Object (DTO) representing a product.
+ * This class is used to transfer product information between different layers of the application.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

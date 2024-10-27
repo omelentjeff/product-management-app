@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * Data Transfer Object (DTO) representing nutritional facts of a product.
+ * This class is used to transfer nutritional information between different layers of the application.
+ */
 @Data
 @Builder
 @NoArgsConstructor

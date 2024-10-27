@@ -11,9 +11,23 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Global exception handler for the application that handles exceptions
+ * thrown by the application and returns structured error responses.
+ *
+ * This class uses Spring's {@link RestControllerAdvice} to intercept
+ * exceptions at the controller level and provide custom responses.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Handles {@link ProductNotFoundException} and returns a
+     * structured error response with HTTP status 404 (Not Found).
+     *
+     * @param ex the exception thrown when a product is not found
+     * @return a ResponseEntity containing the error response
+     */
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException ex) {
 
@@ -26,6 +40,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Handles {@link UsernameInUseException} and returns a
+     * structured error response with HTTP status 400 (Bad Request).
+     *
+     * @param ex the exception thrown when a username is already in use
+     * @return a ResponseEntity containing the error response
+     */
     @ExceptionHandler(UsernameInUseException.class)
     public ResponseEntity<ErrorResponse> handleUsernameInUse(UsernameInUseException ex) {
         var error = ErrorResponse
@@ -37,6 +58,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles validation exceptions thrown during method argument validation
+     * and returns a structured error response with HTTP status 400 (Bad Request).
+     *
+     * @param ex the exception thrown during validation
+     * @return a ResponseEntity containing the error response with details of validation failures
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<String> details = ex.getBindingResult()
