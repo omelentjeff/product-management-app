@@ -72,7 +72,6 @@ export const fetchSingleData = async (token, id) => {
   }
 };
 
-// TODO: Implement search functionality for gtin and name fields both
 export const fetchSearchData = async (token, query) => {
   console.log("Searching for: ", query);
   try {
