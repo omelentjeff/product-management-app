@@ -41,7 +41,7 @@ docker-compose down
 - User accounts can read data
 - Admin accounts can Create, Read, Update and Delete data
 - Image uploads from admin file system (images stored in database)
-- Data represented in a table/grid
+- Data represented in a table/grid (sortable by 'name' and 'manufacturer' fields)
 - Dynamic search feature to look for products based on GTIN-code AND product name
 - Auto-suggestion for search
 - User input debouncing for reducing API calls
