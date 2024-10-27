@@ -83,8 +83,14 @@ public class ProductService {
         return productMapper.toDTO(existingProduct);
     }
 
-    public Page<ProductDTO> searchProducts(String name, String manufacturer, String gtin, Pageable pageable) {
-        Page<Product> productPage = productRepository.findByNameContainingIgnoreCaseOrManufacturerContainingIgnoreCaseOrGtinIgnoreCase(name, manufacturer, gtin, pageable);
+    public Page<ProductDTO> searchProducts(String query, Pageable pageable) {
+        Page<Product> productPage;
+
+        if (query.matches("\\d+")) {
+            productPage = productRepository.findByGtinContainingIgnoreCase(query, pageable);
+        } else {
+            productPage = productRepository.findByNameContainingIgnoreCase(query, pageable);
+        }
 
         List<ProductDTO> productDTOS = productPage.stream()
                 .map(productMapper::toDTO)
