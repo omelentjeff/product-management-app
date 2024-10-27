@@ -80,7 +80,7 @@ export default function Search({ setQuery, resetQuery }) {
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Enter a product name"
+              placeholder="Search by name or gtin"
               value={input}
               onChange={handleInputChange}
               InputProps={{
