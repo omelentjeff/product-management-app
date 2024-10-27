@@ -72,10 +72,11 @@ export const fetchSingleData = async (token, id) => {
   }
 };
 
+// TODO: Implement search functionality for gtin and name fields both
 export const fetchSearchData = async (token, query) => {
   console.log("Searching for: ", query);
   try {
-    const response = await axios.get(`${baseUrl}/search?name=${query}`, {
+    const response = await axios.get(`${baseUrl}/search?query=${query}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -87,6 +88,7 @@ export const fetchSearchData = async (token, query) => {
       return { content: [], totalPages: 0 };
     }
 
+    console.log("JOU: ", response);
     return response.data;
   } catch (error) {
     console.error(`Error fetching search data:`, error);

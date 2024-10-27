@@ -48,7 +48,7 @@ export default function ProductTable() {
       try {
         let data;
         if (query) {
-          console.log("Query is present");
+          console.log("Query is present: " + query);
           data = await fetchSearchData(token, query);
         } else {
           const sortParam = `${sortConfig.key},${sortConfig.direction}`;
