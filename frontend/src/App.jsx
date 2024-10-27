@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import MyAppBar from "./components/MyAppBar";
 import ProductTable from "./components/ProductTable";
 import { AuthProvider } from "./hooks/AuthProvider";
+import NotFound from "./components/NotFound";
 
 /**
  * Main application component.
@@ -27,6 +28,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<ProductTable />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </Router>
