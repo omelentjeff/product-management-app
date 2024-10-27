@@ -45,6 +45,16 @@ const NUTRITIONAL_FACTS = [
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
+/**
+ * EditDialog Component - A dialog for editing product details and nutritional facts.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.product - The product object containing details to be edited.
+ * @param {string} props.text - The button text to open the dialog.
+ * @param {function} props.onUpdate - Callback function triggered when the product is updated.
+ *
+ * @returns {JSX.Element} The rendered edit dialog component.
+ */
 export default function EditDialog({ product, text, onUpdate }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
@@ -54,6 +64,11 @@ export default function EditDialog({ product, text, onUpdate }) {
   const [formErrors, setFormErrors] = useState({});
   const { token } = useAuth();
 
+  /**
+   * Opens the edit dialog and fetches product details.
+   *
+   * @returns {Promise<void>}
+   */
   const handleClickOpen = async () => {
     setOpen(true);
     setIsLoading(true);
@@ -69,16 +84,30 @@ export default function EditDialog({ product, text, onUpdate }) {
     }
   };
 
+  /**
+   * Closes the edit dialog and resets local state.
+   */
   const handleClose = () => {
     setOpen(false);
     setProductDetails(null);
     setTabIndex(0);
   };
 
+  /**
+   * Handles the tab change event to switch between Product Details and Nutritional Facts.
+   *
+   * @param {Object} event - The event object.
+   * @param {number} newValue - The new tab index.
+   */
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
 
+  /**
+   * Handles input changes in the form fields and updates product details state.
+   *
+   * @param {Object} e - The change event.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -119,6 +148,11 @@ export default function EditDialog({ product, text, onUpdate }) {
     });
   };
 
+  /**
+   * Saves the updated product details and nutritional facts, and uploads the image if provided.
+   *
+   * @returns {Promise<void>}
+   */
   const handleSave = async () => {
     const productPayload = {
       name: productDetails.name,
@@ -182,6 +216,11 @@ export default function EditDialog({ product, text, onUpdate }) {
     }
   };
 
+  /**
+   * Handles the image upload event and updates the selected image state.
+   *
+   * @param {Object} e - The change event for file input.
+   */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {

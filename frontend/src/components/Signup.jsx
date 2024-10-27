@@ -19,6 +19,12 @@ import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 
+/**
+ * Signup component that handles user registration, including form validation,
+ * password matching, and role selection.
+ *
+ * @returns {JSX.Element} The rendered Signup component.
+ */
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerifyPassword, setShowVerifyPassword] = useState(false);
@@ -34,10 +40,22 @@ export default function Signup() {
   const navigate = useNavigate();
   const { register } = useAuth();
 
+  /**
+   * Checks if the two provided passwords match.
+   *
+   * @param {string} password1 - The first password.
+   * @param {string} password2 - The second password.
+   * @returns {boolean} True if passwords match, otherwise false.
+   */
   const checkPasswordMatch = (password1, password2) => {
     return password1 === password2;
   };
 
+  /**
+   * Handles the form submission for user registration.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - The form submit event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage("");
@@ -85,6 +103,11 @@ export default function Signup() {
     }
   };
 
+  /**
+   * Handles changes to the input fields and updates the form data.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The change event.
+   */
   const handleChange = (event) => {
     setFormData({
       ...formData,

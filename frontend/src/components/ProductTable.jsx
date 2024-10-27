@@ -27,6 +27,11 @@ const columns = [
   { id: "details", label: "Details", minWidth: 100 },
 ];
 
+/**
+ * ProductTable component that displays a paginated and sortable table of products.
+ * Allows for searching, adding, editing, and deleting products.
+ * @returns {JSX.Element} The rendered ProductTable component.
+ */
 export default function ProductTable() {
   const location = useLocation();
   const [data, setData] = useState([]);
@@ -42,7 +47,12 @@ export default function ProductTable() {
   const { role, token } = useAuth();
 
   useEffect(() => {
-    //console.log("ROLE : ", role);
+    /**
+     * Fetches product data from the API.
+     * Depending on whether a search query is present, it fetches either filtered or paginated data.
+     * @async
+     * @function fetchProductData
+     */
     const fetchProductData = async () => {
       setIsLoading(true);
       try {
@@ -66,6 +76,10 @@ export default function ProductTable() {
     fetchProductData();
   }, [token, page, sortConfig, query]);
 
+  /**
+   * Handles the update of a product in the table.
+   * @param {Object} updatedProduct - The updated product data.
+   */
   const handleUpdateProduct = (updatedProduct) => {
     setData((prevData) =>
       prevData.map((product) =>
@@ -74,22 +88,36 @@ export default function ProductTable() {
     );
   };
 
-  // Callback to handle product deletion
+  /**
+   * Handles the deletion of a product from the table.
+   * @param {number} productId - The ID of the product to delete.
+   */
   const handleDeleteProduct = (productId) => {
     setData((prevData) =>
       prevData.filter((product) => product.id !== productId)
     );
   };
 
+  /**
+   * Handles adding a new product to the table.
+   * @param {Object} newProduct - The new product data to add.
+   */
   const handleAddProduct = (newProduct) => {
     setData((prevData) => [newProduct, ...prevData]); // Add new product to the beginning
   };
 
+  /**
+   * Resets the search query and sets the page to 1.
+   */
   const resetQuery = () => {
     setQuery("");
     setPage(1);
   };
 
+  /**
+   * Handles sorting of the table based on the selected column.
+   * @param {string} columnId - The ID of the column to sort by.
+   */
   const handleSort = (columnId) => {
     let direction = "asc";
     if (sortConfig.key === columnId) {
@@ -99,11 +127,21 @@ export default function ProductTable() {
     setPage(1);
   };
 
+  /**
+   * Handles page change event from the pagination component.
+   * @param {Object} event - The event object.
+   * @param {number} value - The new page number.
+   */
   const handleChangePage = (event, value) => {
     console.log("Page changed to:", value);
     setPage(value);
   };
 
+  /**
+   * Renders the appropriate sort icon based on the current sort configuration.
+   * @param {string} columnId - The ID of the column to check.
+   * @returns {JSX.Element} The sort icon element.
+   */
   const renderSortIcon = (columnId) => {
     if (sortConfig.key === columnId) {
       return sortConfig.direction === "asc" ? (

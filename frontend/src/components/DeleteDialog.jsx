@@ -8,18 +8,38 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { deleteProduct } from "../apiService";
 import { useAuth } from "../hooks/AuthProvider";
 
+/**
+ * DeleteDialog Component - A dialog for confirming the deletion of a product.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.product - The product object to be deleted, containing at least an `id` and a `name`.
+ * @param {function} props.onDelete - Callback function to be called when a product is successfully deleted.
+ *
+ * @returns {JSX.Element} The rendered delete confirmation dialog component.
+ */
 export default function DeleteDialog({ product, onDelete }) {
   const [open, setOpen] = useState(false);
   const { token } = useAuth();
 
+  /**
+   * Opens the delete confirmation dialog.
+   */
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  /**
+   * Closes the delete confirmation dialog.
+   */
   const handleClose = () => {
     setOpen(false);
   };
 
+  /**
+   * Handles the deletion of the product. Calls the deleteProduct API and triggers the onDelete callback.
+   *
+   * @returns {Promise<void>} A promise that resolves when the delete operation is complete.
+   */
   const handleDelete = async () => {
     try {
       await deleteProduct(token, product.id);

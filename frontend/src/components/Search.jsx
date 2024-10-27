@@ -18,12 +18,25 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
+/**
+ * Search component that provides a text input field for searching
+ * products by name or GTIN, displaying suggestions as the user types.
+ *
+ * @param {Object} props - The component props.
+ * @param {function} props.setQuery - Function to set the query for the search.
+ * @param {function} props.resetQuery - Function to reset the search query.
+ * @returns {JSX.Element} The rendered Search component.
+ */
 export default function Search({ setQuery, resetQuery }) {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { token } = useAuth();
 
+  /**
+   * Fetch suggestions from the API with a debounce to limit the number
+   * of API calls while typing.
+   */
   const fetchSuggestions = useMemo(
     () =>
       debounce(async (value) => {
@@ -44,11 +57,19 @@ export default function Search({ setQuery, resetQuery }) {
     [] // Dependencies: empty array ensures the function is created only once
   );
 
+  /**
+   * Handles input changes in the search field and fetches suggestions.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleInputChange = (e) => {
     setInput(e.target.value);
     fetchSuggestions(e.target.value);
   };
 
+  /**
+   * Clears the input field and resets suggestions and query.
+   */
   const handleClearInput = () => {
     setInput("");
     setSuggestions([]);
@@ -56,6 +77,11 @@ export default function Search({ setQuery, resetQuery }) {
     resetQuery();
   };
 
+  /**
+   * Handles click on a suggestion to populate the input and set the query.
+   *
+   * @param {Object} suggestion - The selected suggestion.
+   */
   const handleSuggestionClick = (suggestion) => {
     console.log("Suggestion clicked:", suggestion);
     setInput(suggestion.name);

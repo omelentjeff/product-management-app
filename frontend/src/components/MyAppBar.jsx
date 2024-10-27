@@ -6,11 +6,21 @@ import Toolbar from "@mui/material/Toolbar";
 import { Typography, Button } from "@mui/material";
 import { useAuth } from "../hooks/AuthProvider";
 
+/**
+ * MyAppBar Component - A navigation bar for the application.
+ *
+ * Displays the application title and a logout button if the user is authenticated.
+ *
+ * @returns {JSX.Element} The rendered app bar component.
+ */
 export default function MyAppBar() {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { token } = useAuth();
 
+  /**
+   * Handles the logout action by calling the logout function from the authentication context.
+   */
   const handleLogout = () => {
     logout();
   };

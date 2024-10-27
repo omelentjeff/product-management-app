@@ -7,6 +7,15 @@ import MyAppBar from "./components/MyAppBar";
 import ProductTable from "./components/ProductTable";
 import { AuthProvider } from "./hooks/AuthProvider";
 
+/**
+ * Main application component.
+ *
+ * This component sets up the routing for the application using React Router.
+ * It wraps the entire app in the AuthProvider for managing authentication state
+ * and provides the main navigation bar.
+ *
+ * @returns {JSX.Element} The main application structure.
+ */
 function App() {
   return (
     <Router>

@@ -6,6 +6,14 @@ import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
+/**
+ * AuthProvider component that provides authentication context to its children.
+ * Manages user authentication, registration, and session state.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components that will have access to the authentication context.
+ * @returns {JSX.Element} The rendered AuthProvider component.
+ */
 export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
@@ -23,6 +31,14 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  /**
+   * Authenticates the user using their username and password.
+   *
+   * @param {string} username - The username of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise<Object>} The response data containing the token and user details.
+   * @throws {Error} Throws an error if authentication fails.
+   */
   const authenticate = async (username, password) => {
     try {
       const response = await axios.post(`${API_URL}/auth/authenticate`, {
@@ -48,6 +64,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Registers a new user with the specified username, password, and role.
+   *
+   * @param {string} username - The desired username for the new user.
+   * @param {string} password - The password for the new user.
+   * @param {string} role - The role of the new user (e.g., 'user', 'admin').
+   * @returns {Promise<Object>} The response data containing the token and user details.
+   * @throws {Error} Throws an error if registration fails.
+   */
   const register = async (username, password, role) => {
     try {
       const response = await axios.post(`${API_URL}/auth/register`, {
@@ -75,6 +100,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Logs out the user, clearing their authentication data.
+   */
   const logout = () => {
     setUsername(null);
     setRole(null);
@@ -92,4 +120,9 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to access the authentication context.
+ *
+ * @returns {Object} The authentication context values.
+ */
 export const useAuth = () => useContext(AuthContext);

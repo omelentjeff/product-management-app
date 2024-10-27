@@ -41,6 +41,15 @@ const NUTRITIONAL_FACTS = [
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
+/**
+ * AddProductDialog Component - A dialog for adding new product details including nutritional facts.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.text - The text to display on the button that opens the dialog.
+ * @param {function} props.onCreate - Callback function to be called when a new product is successfully created.
+ *
+ * @returns {JSX.Element} The rendered dialog component.
+ */
 export default function AddProductDialog({ text, onCreate }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState({
@@ -57,10 +66,17 @@ export default function AddProductDialog({ text, onCreate }) {
   const [formErrors, setFormErrors] = useState({});
   const { token } = useAuth();
 
+  /**
+   * Opens the dialog.
+   */
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  /**
+   * Closes the dialog and resets the form fields.
+   */
   const handleClose = () => {
     setOpen(false);
     setProductDetails({
@@ -74,10 +90,21 @@ export default function AddProductDialog({ text, onCreate }) {
     setTabIndex(0);
   };
 
+  /**
+   * Handles tab changes.
+   *
+   * @param {Object} event - The event object.
+   * @param {number} newValue - The new tab index.
+   */
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
 
+  /**
+   * Handles input changes for the product details and nutritional facts.
+   *
+   * @param {Object} e - The event object.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -118,6 +145,11 @@ export default function AddProductDialog({ text, onCreate }) {
     });
   };
 
+  /**
+   * Handles saving the product details.
+   *
+   * @returns {Promise<void>} A promise that resolves when the save operation is complete.
+   */
   const handleSave = async () => {
     const productPayload = {
       name: productDetails.name,
@@ -183,6 +215,11 @@ export default function AddProductDialog({ text, onCreate }) {
     }
   };
 
+  /**
+   * Handles image changes when a user uploads a new image.
+   *
+   * @param {Object} e - The event object.
+   */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {

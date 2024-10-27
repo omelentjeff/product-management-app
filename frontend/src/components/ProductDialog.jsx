@@ -34,6 +34,14 @@ const NUTRITIONAL_FACTS = [
   { label: "Calcium", key: "calcium", unit: "mg" },
 ];
 
+/**
+ * StationDialog Component - A dialog displaying product details and nutritional facts.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Object} props.product - The product data to display.
+ * @param {string} props.text - The text to display on the button that opens the dialog.
+ * @returns {JSX.Element} The rendered dialog component.
+ */
 export default function StationDialog({ product, text }) {
   const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
@@ -41,6 +49,12 @@ export default function StationDialog({ product, text }) {
   const [tabIndex, setTabIndex] = useState(0);
   const { token } = useAuth();
 
+  /**
+   * Opens the dialog and fetches product details from the API.
+   *
+   * @async
+   * @function handleClickOpen
+   */
   const handleClickOpen = async () => {
     setOpen(true);
     setIsLoading(true);
@@ -56,12 +70,24 @@ export default function StationDialog({ product, text }) {
     }
   };
 
+  /**
+   * Closes the dialog and resets product details and tab index.
+   *
+   * @function handleClose
+   */
   const handleClose = () => {
     setOpen(false);
     setProductDetails(null);
     setTabIndex(0);
   };
 
+  /**
+   * Handles tab changes within the dialog.
+   *
+   * @param {Object} event - The event object.
+   * @param {number} newValue - The new value for the tab index.
+   * @function handleTabChange
+   */
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };

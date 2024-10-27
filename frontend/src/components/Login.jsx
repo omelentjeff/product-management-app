@@ -17,6 +17,11 @@ import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 
+/**
+ * Login Component - A component for user authentication.
+ *
+ * @returns {JSX.Element} The rendered login form component.
+ */
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,6 +30,12 @@ export default function Login() {
   const navigate = useNavigate();
   const { authenticate } = useAuth();
 
+  /**
+   * Handles the form submission for user login.
+   *
+   * @param {Object} event - The form submission event.
+   * @returns {Promise<void>} A promise that resolves when the authentication process completes.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage("");
