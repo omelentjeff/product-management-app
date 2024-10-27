@@ -288,9 +288,10 @@ export default function EditDialog({ product, text, onUpdate }) {
                           }}
                         />
                       ) : (
-                        <Typography variant="body1" color="textSecondary">
-                          Image coming soon...
-                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="textSecondary"
+                        ></Typography>
                       )}
                       {/* Image Upload Button */}
                       <input

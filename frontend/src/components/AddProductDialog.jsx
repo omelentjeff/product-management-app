@@ -283,9 +283,10 @@ export default function AddProductDialog({ text, onCreate }) {
                         }}
                       />
                     ) : (
-                      <Typography variant="body1" color="textSecondary">
-                        Image coming soon...
-                      </Typography>
+                      <Typography
+                        variant="body1"
+                        color="textSecondary"
+                      ></Typography>
                     )}
                     <input
                       accept="image/*"
