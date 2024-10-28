@@ -33,7 +33,7 @@ docker-compose down
 ## Tech/framework used
 - Java / Spring Boot
 - MySql
-- React.js
+- ReactJS
 - Docker
 - JWT for user authentication
 
