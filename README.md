@@ -1,8 +1,4 @@
-# Solteq-harjoitustehtava
-
-
-## Motivation
-Pre-assignment developed for Solteq recruiting process
+# Product management app
 
 ## How to run the app locally
 1. Make sure Docker Desktop is installed and running. If you don't have it, you can install it here: https://www.docker.com/products/docker-desktop/
